@@ -20,10 +20,7 @@ Windows Dependencies:
 #Import the PyVISA library to Python.
 import pyvisa
 import warnings
-import sys
 import time
-import csv
-from pathlib import Path
 
 
 # mute warnings
@@ -34,7 +31,8 @@ warnings.filterwarnings("ignore")
 class PowerMeter:
 
     # Instantiate
-    def __init__(self, calDir="./cal", isSimulated=False):
+    def __init__(self, isSimulated=False):
+        self._device = None
 
         # simulation
         if isSimulated:
@@ -42,8 +40,7 @@ class PowerMeter:
         else:
             self._rm = pyvisa.ResourceManager()
 
-        self._device = None
-        self._calDirectory = calDir
+        
 
 
 
@@ -52,9 +49,13 @@ class PowerMeter:
         return "PM61"
     
 
+    # Determine whether device is connected
+    def isConnected(self) -> bool:
+        return (self._device != None)
+
 
     # Open a session
-    def connect(self):
+    def connect(self) -> None:
         print("# ATTEMPT TO CONNECT")
         
         # generate the resourcelist
@@ -82,7 +83,7 @@ class PowerMeter:
     
 
     # Setup the PM61 state
-    def setupSensors(self):
+    def setupSensors(self) -> None:
         if self._device is None:
             print("! DEVICE NOT CONNECTED, CANNOT SETUP SENSORS")
             return
@@ -99,7 +100,7 @@ class PowerMeter:
 
 
     # Disconnect from the PM61
-    def disconnect(self):
+    def disconnect(self) -> None:
         print("# DISCONNECTING")
         #Close device in any case
         if self._device is not None:
@@ -118,7 +119,7 @@ class PowerMeter:
 
 
     # Read Device Charge
-    def readCharge(self):
+    def readCharge(self) -> None:
         if self._device is None:
             return
         
@@ -127,7 +128,7 @@ class PowerMeter:
 
     
 
-    def takeReading(self):
+    def takeReading(self) -> float:
         if self._device is None:
             print("! CANNOT TAKE READING, DEVICE NOT CONNECTED")
             return
@@ -141,42 +142,6 @@ class PowerMeter:
 
         # wait
         time.sleep(1)
-
-
-
-    # Read a cal from CSV
-    # TODO: move to another place, this is just temp here for now
-    # 
-    def read_calibration_csv(self, metric : str):
-        
-        fileName = f"CAL_{metric}.csv"
-        filePath = Path(self._calDirectory) / fileName
-
-        if not filePath.exists():
-            raise FileNotFoundError(f"Calibration file not found: {filePath}")
-
-        data = []
-
-        with open(filePath, newline="", encoding="utf-8") as csvfile:
-            reader = csv.DictReader(csvfile)
-
-            # Validate expected columns
-            expectedFields = {"Reading", "Result", "Unit"}
-            
-            if not expectedFields.issubset(reader.fieldnames):
-                raise ValueError(
-                    f"CSV must contain columns {expectedFields}, "
-                    f"found {reader.fieldnames}"
-                )
-
-            for row in reader:
-                data.append({
-                    "Reading": float(row["Reading"]),
-                    "Result": float(row["Result"]),
-                    "Unit": row["Unit"]
-                })
-
-        return data
 
 
 
