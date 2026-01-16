@@ -1,4 +1,4 @@
-from pm61 import PowerMeter
+from PowerMeter import *
 
 device = PowerMeter()
 device.connect()

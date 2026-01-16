@@ -15,9 +15,7 @@ Windows Dependencies:
     csv
     
     PM61 USB Drivers
-
 """
-
 
 #Import the PyVISA library to Python.
 import pyvisa
@@ -27,8 +25,10 @@ import time
 import csv
 from pathlib import Path
 
+
 # mute warnings
 warnings.filterwarnings("ignore")
+
 
 # pm61 class
 class PowerMeter:
@@ -45,10 +45,14 @@ class PowerMeter:
         self._device = None
         self._calDirectory = calDir
 
+
+
     # tostring definition
     def __str__(self):
         return "PM61"
     
+
+
     # Open a session
     def connect(self):
         print("# ATTEMPT TO CONNECT")
@@ -76,6 +80,7 @@ class PowerMeter:
         print("# DEVICE", self._device.query("SYST:SENS:IDN?"))
         
     
+
     # Setup the PM61 state
     def setupSensors(self):
         if self._device is None:
@@ -90,6 +95,7 @@ class PowerMeter:
         
         #set units to dbm
         self._device.write("SENS:POW:UNIT DBM")
+
 
 
     # Disconnect from the PM61
@@ -110,6 +116,7 @@ class PowerMeter:
                 pass
 
 
+
     # Read Device Charge
     def readCharge(self):
         if self._device is None:
@@ -119,6 +126,7 @@ class PowerMeter:
         print("# CURRENT CHARGE", batteryLevel)
 
     
+
     def takeReading(self):
         if self._device is None:
             print("! CANNOT TAKE READING, DEVICE NOT CONNECTED")
@@ -133,6 +141,7 @@ class PowerMeter:
 
         # wait
         time.sleep(1)
+
 
 
     # Read a cal from CSV
@@ -174,7 +183,7 @@ class PowerMeter:
 # Example if this is run as main
 if __name__ == "__main__":
     # define the device
-    device = PM61()
+    device = PowerMeter()
     
     # connect to pm61
     device.connect()
