@@ -1,3 +1,22 @@
+"""
+Docstring for raspi_src.main
+
+PM61 reading
+
+Windows Dependencies:
+    pyvisa
+    pyvisa-py
+    pyusb
+    libusb_package
+    warnings
+    sys
+    tkinter
+    csv
+    
+    PM61 USB Drivers
+
+"""
+
 from PowerMeter import *
 from Calibration import *
 
