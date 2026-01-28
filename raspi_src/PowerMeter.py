@@ -21,6 +21,12 @@ Windows Dependencies:
 import pyvisa
 import warnings
 import time
+import scpi_util
+
+
+# Constants
+MAX_WAVELENGTH = 1500
+MIN_WAVELENGTH = 500
 
 
 # mute warnings
@@ -33,13 +39,14 @@ class PowerMeter:
     # Instantiate
 
     """
-    Docstring for PowerMeter
-    \nisSimulated : bool
-    \nunit : "DBM" | "W"
+        Private Methods
     """
-    def __init__(self, isSimulated=False, unit="DBM"):
+
+    # Constructor
+    def __init__(self, isSimulated=False):
         self._device = None
-        self._unit = unit
+        self._unit = None
+        self._range = None
 
         # simulation
         if isSimulated:
@@ -47,21 +54,19 @@ class PowerMeter:
         else:
             self._rm = pyvisa.ResourceManager()
 
-        
 
-
-
-    # tostring definition
     def __str__(self):
         return "PM61"
     
 
-    # Determine whether device is connected
-    def isConnected(self) -> bool:
-        return (self._device != None)
+    def __assertConnection(self) -> bool:
+        assert self._device != None, "PowerMeter: No Device Connected"
+        
+    
 
-
-    # Open a session
+    """
+        Public Methods
+    """
     def connect(self) -> None:
         print("# ATTEMPT TO CONNECT")
         
@@ -80,34 +85,13 @@ class PowerMeter:
         self._device = self._rm.open_resource(deviceId)
         print("# CONNECTION OPENED")
 
-
         # print the device information
         # PM61A, 250219304 supposedly
         self._device.write('*IDN?')
         self._device.read('\n')
         print("# DEVICE", self._device.query("SYST:SENS:IDN?"))
-        
+
     
-
-    # Setup the PM61 state
-    def setupSensors(self) -> None:
-        if self._device is None:
-            print("! DEVICE NOT CONNECTED, CANNOT SETUP SENSORS")
-            return
-
-        #turn on auto-ranging
-        self._device.write("SENS:RANGE:AUTO ON")
-        
-        #set wavelength setting, so the correct calibration point is used
-        self._device.write("SENS:CORR:WAV 870")
-        
-        #set units to dbm
-        unitWriteString = str.format("SENS:POW:UNIT %s", self._unit)
-        self._device.write(unitWriteString)
-
-
-
-    # Disconnect from the PM61
     def disconnect(self) -> None:
         print("# DISCONNECTING")
         #Close device in any case
@@ -124,54 +108,93 @@ class PowerMeter:
             except Exception:
                 pass
 
+    
+    """None -> AutoRange; range is in W"""
+    def setMeasurementRange(self, range : float =None) -> None:
+        self.__assertConnection()
+
+        autoRangingEnabled = scpi_util.BOOL_ONOFF(range==None)
+        self._device.write(f"SENS:RANGE:AUTO {autoRangingEnabled}")
+       
+        if range != None:
+            self._device.write(f"SENS:CURR:RANG {range}")
 
 
-    # Read Device Charge
-    def readCharge(self) -> None:
-        if self._device is None:
-            return
-        
-        batteryLevel = self._device.query("SYST:BATT:SOC?")
-        print("# CURRENT CHARGE", batteryLevel)
+    """Wavelength in nm"""
+    def setWavelength(self, lambda_nm : int):
+        self.__assertConnection()
+        assert(type(lambda_nm) == int)
+        self._device.write(f"SENS:CORR:WAV {lambda_nm}")
 
+
+    """DBM or W"""
+    def setMeasurementUnit(self, unitName : str) -> None:
+        self.__assertConnection()
+        assert((unitName == "DBM") or (unitName == "W"))
+        self._unit = unitName
+        self._device.write(f"SENS:POW:UNIT {unitName}")
+
+
+    """Set reference for delta readings"""
+    def setDeltaReference(self, reference=0):
+        self.__assertConnection()
+        self._device.write(f"SENS:POW:REF {reference}")
+
+
+    """Enable Delta Readings"""
+    def setDeltaEnabled(self, isEnabled=True):
+        self.__assertConnection()
+        deltaFlagBit = scpi_util.BOOL_ONOFF(isEnabled)
+        self._device.write(f"SENS:POW:REF:STAT {deltaFlagBit}")
+
+
+    """AutoRange, 870nm, DBM"""
+    def setDefaultOptions(self) -> None:
+        self.__assertConnection()
+        self.setAutoRanging(True)
+        self.setWavelength(870)
+        self.setMeasurementUnit("DBM")
+
+
+    def readCharge(self) -> float:
+        self.__assertConnection()
+        return self._device.query("SYST:BATT:SOC?")
+
+
+    def readMeasurement(self) -> float:
+        self.__assertConnection()
+        assert self._unit != None, "PowerMeter: Undeclared Measurement Unit"
+        return self._device.query("MEAS:POW?")
     
 
-    def takeReading(self) -> float:
-        dbm = self.queryPowerMeasurement()
-        print("# DBM READING", dbm)
-        time.sleep(0.25)
+    def beep(self):
+        self.__assertConnection()
+        self._device.write("SYST:BEEP")
 
 
-    def queryPowerMeasurement(self) -> float:
-        if self._device is None:
-            print("! CANNOT TAKE READING, DEVICE NOT CONNECTED")
-            return
-
-        # send a beep to the deviceId
-        #self._device.write("SYST:BEEP")
-
-        # perform reading
-        dbm = self._device.query("MEAS:POW?")
-        return dbm
+    def isConnected(self) -> bool:
+        return (self._device != None)
 
 
 
-# Example if this is run as main
+"""
+    Example Behavior
+"""
 if __name__ == "__main__":
-    # define the device
-    device = PowerMeter(unit="DBM")
-    
-    # connect to pm61
+    device = PowerMeter()
     device.connect()
+    
+    device.setMeasurementUnit("DBM")
+    device.setWavelength(870)
+    device.setMeasurementRange(200e-06)
+    device.beep()
 
-    # setup sensors for readings
-    device.setupSensors()
+    device.disconnect()
 
-    try:
-        while True:
-            # take a reading
-            device.takeReading()
+    # try:
+    #     while True:
+    #         dbm = device.readMeasurement()
+    #         print("# READING", dbm)
 
-    except KeyboardInterrupt:     
-        # disconnect the pm61
-        device.disconnect()
+    # except KeyboardInterrupt:
+    #     device.disconnect()
