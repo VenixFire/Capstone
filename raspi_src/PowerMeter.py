@@ -137,6 +137,12 @@ class PowerMeter:
     
 
     def takeReading(self) -> float:
+        dbm = self.queryPowerMeasurement()
+        print("# DBM READING", dbm)
+        time.sleep(0.25)
+
+
+    def queryPowerMeasurement(self) -> float:
         if self._device is None:
             print("! CANNOT TAKE READING, DEVICE NOT CONNECTED")
             return
@@ -146,8 +152,7 @@ class PowerMeter:
 
         # perform reading
         dbm = self._device.query("MEAS:POW?")
-        print("# DBM READING", dbm)
-        time.sleep(0.25)
+        return dbm
 
 
 
