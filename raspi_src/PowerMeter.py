@@ -31,8 +31,15 @@ warnings.filterwarnings("ignore")
 class PowerMeter:
 
     # Instantiate
-    def __init__(self, isSimulated=False):
+
+    """
+    Docstring for PowerMeter
+    \nisSimulated : bool
+    \nunit : "DBM" | "W"
+    """
+    def __init__(self, isSimulated=False, unit="DBM"):
         self._device = None
+        self._unit = unit
 
         # simulation
         if isSimulated:
@@ -95,7 +102,8 @@ class PowerMeter:
         self._device.write("SENS:CORR:WAV 870")
         
         #set units to dbm
-        self._device.write("SENS:POW:UNIT DBM")
+        unitWriteString = str.format("SENS:POW:UNIT %s", self._unit)
+        self._device.write(unitWriteString)
 
 
 
@@ -134,21 +142,19 @@ class PowerMeter:
             return
 
         # send a beep to the deviceId
-        self._device.write("SYST:BEEP")
+        #self._device.write("SYST:BEEP")
 
         # perform reading
         dbm = self._device.query("MEAS:POW?")
         print("# DBM READING", dbm)
-
-        # wait
-        time.sleep(1)
+        time.sleep(0.25)
 
 
 
 # Example if this is run as main
 if __name__ == "__main__":
     # define the device
-    device = PowerMeter()
+    device = PowerMeter(unit="DBM")
     
     # connect to pm61
     device.connect()
@@ -156,8 +162,11 @@ if __name__ == "__main__":
     # setup sensors for readings
     device.setupSensors()
 
-    # take a reading
-    device.takeReading()
+    try:
+        while True:
+            # take a reading
+            device.takeReading()
 
-    # disconnect the pm61
-    device.disconnect()
+    except KeyboardInterrupt:     
+        # disconnect the pm61
+        device.disconnect()
