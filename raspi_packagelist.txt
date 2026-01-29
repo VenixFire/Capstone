@@ -1,0 +1,7 @@
+List of Installed Raspi Packages:
+git
+pip
+python3
+
+Python Packages:
+python3-pyvisa

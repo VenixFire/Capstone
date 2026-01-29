@@ -15,6 +15,10 @@ Windows Dependencies:
     
     PM61 USB Drivers
 
+
+Linux Dependencies:
+    
+
 """
 
 from PowerMeter import *
