@@ -43,10 +43,11 @@ class PowerMeter:
     """
 
     # Constructor
-    def __init__(self, isSimulated=False):
+    def __init__(self, isSimulated=False, cmdLogEnb=False):
         self._device = None
         self._unit = None
         self._range = None
+        self._cmdLogEnb = cmdLogEnb
 
         # simulation
         if isSimulated:
@@ -62,7 +63,20 @@ class PowerMeter:
     def __assertConnection(self) -> bool:
         assert self._device != None, "PowerMeter: No Device Connected"
         
-    
+
+    def __write(self, command : str) -> None:
+        self.__assertConnection()
+        if self._cmdLogEnb:
+            print("$ w: ", command)
+        self._device.write(command)
+
+
+    def __query(self, command : str) -> any:
+        self.__assertConnection()
+        if self._cmdLogEnb:
+            print("$ q:", command)
+        return self._device.query(command)
+
 
     """
         Public Methods
@@ -89,7 +103,7 @@ class PowerMeter:
         # PM61A, 250219304 supposedly
         self._device.write('*IDN?')
         self._device.read('\n')
-        print("# DEVICE", self._device.query("SYST:SENS:IDN?"))
+        print("# DEVICE", self.__query("SYST:SENS:IDN?"))
 
     
     def disconnect(self) -> None:
@@ -108,23 +122,25 @@ class PowerMeter:
             except Exception:
                 pass
 
+
+    """Set whether autoranging is enabled"""
+    def setAutoRanging(self, enabled : bool) -> None:
+        self.__assertConnection()
+        enbInt = scpi_util.BOOL_INT(enabled)
+        self.__write(f"SENS:POW:RANG:AUTO {enbInt}")
+
     
     """None -> AutoRange; range is in W"""
-    def setMeasurementRange(self, range : float =None) -> None:
+    def setMeasurementRange(self, range : float) -> None:
         self.__assertConnection()
-
-        autoRangingEnabled = scpi_util.BOOL_ONOFF(range==None)
-        self._device.write(f"SENS:RANGE:AUTO {autoRangingEnabled}")
-       
-        if range != None:
-            self._device.write(f"SENS:CURR:RANG {range}")
+        self.__write(f"SENS:POW:RANG {range}")
 
 
     """Wavelength in nm"""
     def setWavelength(self, lambda_nm : int):
         self.__assertConnection()
         assert(type(lambda_nm) == int)
-        self._device.write(f"SENS:CORR:WAV {lambda_nm}")
+        self.__write(f"SENS:POW:WAV {lambda_nm}")
 
 
     """DBM or W"""
@@ -132,20 +148,20 @@ class PowerMeter:
         self.__assertConnection()
         assert((unitName == "DBM") or (unitName == "W"))
         self._unit = unitName
-        self._device.write(f"SENS:POW:UNIT {unitName}")
+        self.__write(f"SENS:POW:UNIT {unitName}")
 
 
     """Set reference for delta readings"""
     def setDeltaReference(self, reference=0):
         self.__assertConnection()
-        self._device.write(f"SENS:POW:REF {reference}")
+        self.__write(f"SENS:POW:REF {reference}")
 
 
     """Enable Delta Readings"""
     def setDeltaEnabled(self, isEnabled=True):
         self.__assertConnection()
         deltaFlagBit = scpi_util.BOOL_ONOFF(isEnabled)
-        self._device.write(f"SENS:POW:REF:STAT {deltaFlagBit}")
+        self.__write(f"SENS:POW:REF:STAT {deltaFlagBit}")
 
 
     """AutoRange, 870nm, DBM"""
@@ -158,13 +174,13 @@ class PowerMeter:
 
     def readCharge(self) -> float:
         self.__assertConnection()
-        return self._device.query("SYST:BATT:SOC?")
+        return self.__query("SYST:BATT:SOC?")
 
 
     def readMeasurement(self) -> float:
         self.__assertConnection()
         assert self._unit != None, "PowerMeter: Undeclared Measurement Unit"
-        return self._device.query("MEAS:POW?")
+        return self.__query("MEAS:POW?")
     
 
     def beep(self):
@@ -174,6 +190,10 @@ class PowerMeter:
 
     def isConnected(self) -> bool:
         return (self._device != None)
+    
+
+    # def printQuery(self, cmd) -> None:
+    #     print(self.__query(cmd))
 
 
 
@@ -181,14 +201,14 @@ class PowerMeter:
     Example Behavior
 """
 if __name__ == "__main__":
-    device = PowerMeter()
+    device = PowerMeter(cmdLogEnb=True)
     device.connect()
     
     device.setMeasurementUnit("DBM")
     device.setWavelength(870)
-    device.setMeasurementRange(200e-06)
+    #device.setAutoRanging(False)
+    device.setMeasurementRange("200e-6")
     device.beep()
-
     device.disconnect()
 
     # try:

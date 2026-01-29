@@ -26,3 +26,13 @@ def BOOL_INT(state : bool) -> int:
         return 1
     else:
         return 0
+    
+
+"""
+Converts 0/1 result from query to logic bool
+"""
+def INT_BOOL(state : int) -> bool:
+    if state == 1:
+        return True
+    else:
+        return False
