@@ -122,18 +122,16 @@ class PowerMeter:
             except Exception:
                 pass
 
-
-    """Set whether autoranging is enabled"""
-    def setAutoRanging(self, enabled : bool) -> None:
-        self.__assertConnection()
-        enbInt = scpi_util.BOOL_INT(enabled)
-        self.__write(f"SENS:POW:RANG:AUTO {enbInt}")
-
+        self._device = None
+        
     
     """None -> AutoRange; range is in W"""
-    def setMeasurementRange(self, range : float) -> None:
+    def setMeasurementRange(self, range : None | float) -> None:
         self.__assertConnection()
-        self.__write(f"SENS:POW:RANG {range}")
+        if range is None:
+            self.__write(f"SENS:POW:RANG:AUTO ON")
+        else:
+            self.__write(f"SENS:POW:RANG {range}")
 
 
     """Wavelength in nm"""
@@ -204,17 +202,15 @@ if __name__ == "__main__":
     device = PowerMeter(cmdLogEnb=True)
     device.connect()
     
-    device.setMeasurementUnit("DBM")
+    device.setMeasurementUnit("W")
     device.setWavelength(870)
-    #device.setAutoRanging(False)
-    device.setMeasurementRange("200e-6")
-    device.beep()
-    device.disconnect()
+    device.setMeasurementRange(None)
 
-    # try:
-    #     while True:
-    #         dbm = device.readMeasurement()
-    #         print("# READING", dbm)
+    try:
+        while True:
+            val = device.readMeasurement()
+            print("# MEASUREMENT:", val)
+            time.sleep(0.5)
 
-    # except KeyboardInterrupt:
-    #     device.disconnect()
+    except KeyboardInterrupt:
+        device.disconnect()
