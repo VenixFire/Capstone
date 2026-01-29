@@ -1,1 +1,2 @@
-documents/** linguist-detectable=false
+documents/** linguist-vendored
+spreadsheets/** linguist-vendored
