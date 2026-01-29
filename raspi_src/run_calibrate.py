@@ -17,24 +17,25 @@ Windows Dependencies:
 
 
 Linux Dependencies:
-    
+
 
 """
 
-from PowerMeter import *
-from Calibration import *
+import PowerMeter as pm
+import Calibration
 
 # create calibrations
 calVolume = Calibration("volume")
 
 # create the device and connect
-device = PowerMeter()
+device = pm.PowerMeter()
 device.connect()
 
 if device.isConnected():
-
-    # prep sensors for readings
-    device.setupSensors()
+    # prep device for readings
+    device.setMeasurementUnit("W")
+    device.setWavelength(870)
+    device.setMeasurementRange(200e-6)
 
     # take reading
     read = device.takeReading()
