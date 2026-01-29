@@ -123,7 +123,7 @@ class PowerMeter:
                 pass
 
         self._device = None
-        
+
     
     """None -> AutoRange; range is in W"""
     def setMeasurementRange(self, range : None | float) -> None:
@@ -138,7 +138,7 @@ class PowerMeter:
     def setWavelength(self, lambda_nm : int):
         self.__assertConnection()
         assert(type(lambda_nm) == int)
-        self.__write(f"SENS:POW:WAV {lambda_nm}")
+        self.__write(f"SENS:CORR:WAV {lambda_nm}")
 
 
     """DBM or W"""
@@ -170,17 +170,21 @@ class PowerMeter:
         self.setMeasurementUnit("DBM")
 
 
-    def readCharge(self) -> float:
+    """Return float for charge percent"""
+    def getBatteryCharge(self) -> float:
         self.__assertConnection()
         return self.__query("SYST:BATT:SOC?")
 
 
-    def readMeasurement(self) -> float:
+    """Returns the power measurement"""
+    """Provides higher resolution than visible on the PM60 itself"""
+    def getPowerReading(self) -> float:
         self.__assertConnection()
         assert self._unit != None, "PowerMeter: Undeclared Measurement Unit"
         return self.__query("MEAS:POW?")
     
 
+    """System beep"""
     def beep(self):
         self.__assertConnection()
         self._device.write("SYST:BEEP")
@@ -204,11 +208,11 @@ if __name__ == "__main__":
     
     device.setMeasurementUnit("W")
     device.setWavelength(870)
-    device.setMeasurementRange(None)
+    device.setMeasurementRange(200e-6)
 
     try:
         while True:
-            val = device.readMeasurement()
+            val = device.getPowerReading()
             print("# MEASUREMENT:", val)
             time.sleep(0.5)
 
