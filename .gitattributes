@@ -1,2 +1,5 @@
+# removes docs from "languages" listing
 documents/** linguist-vendored
+
+# removes spreadsheets from lang listing
 spreadsheets/** linguist-vendored
