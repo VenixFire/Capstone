@@ -22,7 +22,6 @@ Linux Dependencies:
 """
 
 import PowerMeter as pm
-import Calibration as cal
 import numpy as np
 import json
 
