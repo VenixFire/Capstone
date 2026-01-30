@@ -21,7 +21,7 @@ Windows Dependencies:
 import pyvisa
 import warnings
 import time
-import scpi_util
+import PowerMeter.scpi_util as scpi_util
 
 
 # Constants
@@ -44,6 +44,7 @@ class PowerMeter:
 
     # Constructor
     def __init__(self, isSimulated=False, cmdLogEnb=False):
+        self._deviceId = "USB0::EMPTY"
         self._device = None
         self._unit = None
         self._range = None
@@ -96,8 +97,9 @@ class PowerMeter:
             return
 
         # Connect to pm61 (should be only available device)
+        self._deviceId = deviceId
         self._device = self._rm.open_resource(deviceId)
-        print("# CONNECTION OPENED")
+        print("# CONNECTION OPENED WITH", deviceId)
 
         # print the device information
         # PM61A, 250219304 supposedly
@@ -107,7 +109,7 @@ class PowerMeter:
 
     
     def disconnect(self) -> None:
-        print("# DISCONNECTING")
+        print("# DISCONNECTING FROM", self._deviceId)
         #Close device in any case
         if self._device is not None:
             try:
