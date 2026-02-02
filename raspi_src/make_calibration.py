@@ -63,4 +63,3 @@ sampleEntries.sort(key=lambda tup : tup[0])
 
 with open("cal.json", "w") as fptr:
     json.dump(sampleEntries, fptr)
-
