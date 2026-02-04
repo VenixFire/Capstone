@@ -48,8 +48,8 @@ x = []
 y = []
 
 for pair in calibration:
-    x.append(pair[1])
-    y.append(pair[0])
+    x.append(pair[0])
+    y.append(pair[1])
 
 # https://stackoverflow.com/questions/6148207/linear-regression-with-matplotlib-numpy
 polyCoef = np.polyfit(x,y,1)
@@ -59,7 +59,8 @@ poly1d_func = np.poly1d(polyCoef)
 # Connect and print results
 try:
     while True:
-        val = device.getPowerReading()
+        val_raw : str = device.getPowerReading()
+        val = float(val_raw)
         alpha = poly1d_func(val)
         print("Result:",alpha)
         time.sleep(0.1)

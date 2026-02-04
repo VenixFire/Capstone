@@ -51,15 +51,13 @@ for n in range(nOutputs):
     mapping = int(input())
 
     # generate samples
+    print(f"Press Enter to Calibrate for {mapping}:")
     sampleResult = np.zeros([nSamples]).astype(np.float64)
     for sIdx in range(nSamples):
-        sampleResult[sIdx] = device.getPowerReading()
+        reading = device.getPowerReading()
+        sampleEntries.append([reading, mapping])
 
-    # output sample results
-    avg = np.average(sampleResult)
-    sampleEntries.append([mapping, avg])
-
-sampleEntries.sort(key=lambda tup : tup[0])
+sampleEntries.sort(key=lambda tup : tup[1])
 
 with open("cal.json", "w") as fptr:
     json.dump(sampleEntries, fptr)
