@@ -1,7 +1,21 @@
 # Capstone
 VandalOptics capstone project.
-`/raspi_src/` contains source code for Raspberry Pi (4b) datalogger software
-Interface with PM60 power meter to reading fiber power levels
+
+`/raspi_src/` contains source code for datalogger
+
+Intended platform is Raspberry Pi (4b) using headless debian with latest version. 
+
+Datalogger interfaces with Thorlabs PM60 Optic Power Meter to read optical power levels.
+
+## Libraries & Packages
+### Python Libraries
+- PyVisa (SCPI)
+- Numpy
+- Flask
+
+### Packages
+- avahi-daemon (dns masking for http)
+- nmcli (enabling wifi access point; native on newer debian versions)
 
 ## Todo List
 - [x] Power Meter SCPI Interface
