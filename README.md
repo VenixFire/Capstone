@@ -4,13 +4,13 @@ VandalOptics capstone project.
 Interface with PM60 power meter to reading fiber power levels
 
 ## Todo List
-[x] Power Meter SCPI Interface
-[~] Calibrations
-[ ] Result Logging
-[ ] Error Logging
-[ ] Device Information
-[ ] HTTP Content Service
-[ ] Reformat all that for clarity / readability
+- [x] Power Meter SCPI Interface
+- [ ] Calibrations
+- [ ] Result Logging
+- [ ] Error Logging
+- [ ] Device Information
+- [ ] HTTP Content Service
+- [ ] Reformat all that for clarity / readability
 
 ## Important References
 USB Power Control
