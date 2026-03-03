@@ -1,10 +1,11 @@
 """
 
-Jack Chambers
-Senior Design 1
+VandalOptics
+Capstone Design Teams 1
 
-PM61 representation class
-Includes reading from calibration files
+Description:
+    PM61 representation class
+    Includes reading from calibration files
 
 Windows Dependencies:
     pyvisa
@@ -15,6 +16,10 @@ Windows Dependencies:
     csv
     
     PM61 USB Drivers
+
+Authors:
+    Jack Chambers
+
 """
 
 #Import the PyVISA library to Python.
