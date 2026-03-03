@@ -21,7 +21,7 @@ Windows Dependencies:
 import pyvisa
 import warnings
 import time
-import PowerMeter.scpi_util as scpi_util
+import scpi_util
 
 
 # Constants
