@@ -16,43 +16,45 @@ import time
 
 # System Packages
 import PowerMeter
-import ActionLog
 import Calibrations
 import ContentServe
 import ResultLog
 
 
-def callback():
-    return 0
-
-
 if __name__ == "__main__":
-    # Define top-level services
+    # get the device loaded
     device = PowerMeter.PowerMeter(cmdLogEnb=True)
+    device.connect()
+    
+    # initialize device parameters
+    device.setMeasurementUnit("W")
+    device.setWavelength(870)
+    device.setMeasurementRange(200e-6)
+
+    # prepare calibration manager
     calibration = Calibrations.Calibration()
 
-    # # establish connection
-    # device.connect()
-    
-    # # initialize device parameters
-    # device.setMeasurementUnit("W")
-    # device.setWavelength(870)
-    # device.setMeasurementRange(200e-6)
+    # check for an existing calibration
+    if calibration.doesCalibrationExist(Calibrations.DEFAULT_CAL_NAME):
+        # load the calibration
+        calName = calibration.getFileName()
+        calibration.load(calName)
+        print(f"# Calibration loaded {calName}")
 
-    # check for a calibration
-    calName = calibration.getDefaultCalibrationName()
-    hasCal = calibration.hasCalibration()
-    print(hasCal)
-    if hasCal != True:
-        calibration.create(calName, callback)
+    # generate a new calibration
     else:
-        
+        print(f"! No calibration present, creating a new one.")
+        calibration.create(device.getPowerReading)
+        calibration.load(Calibrations.DEFAULT_CAL_NAME)
 
-    # try:
-    #     while True:
-    #         val = device.getPowerReading()
-    #         print("# MEASUREMENT:", val)
-    #         time.sleep(0.5)
+    # reading cycle
+    try:
+        while True:
+            val = device.getPowerReading()
+            result = calibration.read(val)
+            print("@ Measurement:", val)
+            print("@ Output:", result)
+            time.sleep(1.5)
 
-    # except KeyboardInterrupt:
-    #     device.disconnect()
+    except KeyboardInterrupt:
+        device.disconnect()

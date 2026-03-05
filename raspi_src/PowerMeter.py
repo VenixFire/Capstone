@@ -188,7 +188,9 @@ class PowerMeter:
     def getPowerReading(self) -> float:
         self.__assertConnection()
         assert self._unit != None, "PowerMeter: Undeclared Measurement Unit"
-        return self.__query("MEAS:POW?")
+        resultString = self.__query("MEAS:POW?")
+        resultFloat = float(resultString)
+        return resultFloat
     
 
     """System beep"""

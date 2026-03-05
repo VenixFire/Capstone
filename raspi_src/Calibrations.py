@@ -13,23 +13,35 @@ TODO:
 import json
 import numpy as np
 
+DEFAULT_CAL_NAME = "DefaultCalibration"
+
 class Calibration:
-    def __init__(self, defaultName="DefaultCalibration"):
-        self.defaultCalibrationName = f"{defaultName}.json"
-        self.activeCalibrationName = self.defaultCalibrationName
-        pass
+    def __init__(self, fileName=DEFAULT_CAL_NAME, autoSetCalibration=False):
+        # Private Values
+        self._activeCalibrationName = fileName
+        self._polyFunc = None
+
+        # Autoload calibration
+        if autoSetCalibration:
+            self.setCalibration(self.activeCalibrationName)
 
 
-    def set(self, name):
+
+    def load(self, name):
         # define filename
         fName = f"{name}.json"
-        calibrationArray = np.array(samplesLoaded).astype(np.float64)
         x = []
         y = []
 
-        # Load calibration from a file
-        with open(fName, "r") as fptr:
-            samplesLoaded = json.load(fptr)
+        # Attempt to load calibration from a file
+        try:
+            with open(fName, "r") as fptr:
+                samplesLoaded = json.load(fptr)
+                calibrationArray = np.array(samplesLoaded).astype(np.float64)
+
+        except FileNotFoundError:
+            print(f"! No such calibration exists '{fName}'")
+            return
 
         # define points along curve
         for pair in calibrationArray:
@@ -40,25 +52,25 @@ class Calibration:
         # redefine the read method
         # https://stackoverflow.com/questions/6148207/linear-regression-with-matplotlib-numpy
         polynomialCoefficients = np.polyfit(x,y,1)
-        self.read = np.poly1d(polynomialCoefficients)
+        self._polyFunc = np.poly1d(polynomialCoefficients)
 
 
-    def hasCalibration(self) -> bool:
+
+    """Check whether a calibration exists in the filesystem"""
+    def doesCalibrationExist(self, calibrationName=None) -> bool:
         fName = ""
-
-        if self.activeCalibrationName:
-            fName = self.activeCalibrationName
+        if calibrationName:
+            fName = f"{calibrationName}.json"
         else:
-            fName = self.defaultCalibrationName
-
-        fileStr = f"{fName}.json"
+            fName = f"{DEFAULT_CAL_NAME}.json"
 
         try:
-            with open(fileStr, "r") as fptr:
+            with open(fName, "r") as fptr:
                 fptr.close()
                 return True
         except:
             return False
+
 
 
     def create(self, readingCallback, name=None, samples=50, points=2):
@@ -68,7 +80,7 @@ class Calibration:
         if name:
             fName = f"{name}.json"
         else:
-            fName = self.defaultCalibrationName
+            fName = f"{DEFAULT_CAL_NAME}.json"
 
         sampleEntries = []
 
@@ -94,9 +106,15 @@ class Calibration:
             json.dump(sampleEntries, fptr)
 
 
-    def read(self, inputValue):
-        return None
-    
 
-    def getDefaultCalibrationName(self):
-        return self.defaultCalibrationName
+    def read(self, inputValue) -> float | None:
+        if self._polyFunc == None:
+            print("! No calibration set, please set one before reading")
+            return None
+        else:
+            return self._polyFunc(inputValue)
+
+
+
+    def getFileName(self):
+        return self._activeCalibrationName
