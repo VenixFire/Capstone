@@ -32,3 +32,6 @@ USB Power Control
 
 ## Notes
 - Volume should be a polynomial, I forget what shape, but it's not a linear fit.
+- Need to experiment, but it might spawn two apps
+- Pipe the output to a logfile, so the app should add a timestamp
+
