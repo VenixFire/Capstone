@@ -29,3 +29,6 @@ Datalogger interfaces with Thorlabs PM60 Optic Power Meter to read optical power
 ## Important References
 USB Power Control
 [https://github.com/mvp/uhubctl](https://github.com/mvp/uhubctl) 
+
+## Notes
+- Volume should be a polynomial, I forget what shape, but it's not a linear fit.

@@ -6,6 +6,3 @@ Includes:
     - Connection to device
     - Performing readings
     - Adjusting sensor modes
-
-
-# TODO
