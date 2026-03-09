@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <title>Calibrate</title>
+    <link rel="stylesheet" href="styles.css" />
+  </head>
+
+  <body>
+    <div id="anaappframe">
+      <!-- Exit button (top-right) -->
+      <button id="exit-button" class="webbutton exit-button" aria-label="Exit application">×</button>
+
+      <div id="calibrate-root">
+
+      <!-- Fill-out form -->
+      <div id="filloutformframe">
+        <label id="tanksizelabel" for="tanksizeinput">Tank Size</label>
+        <input id="tanksizeinput" type="text" />
+        <div id="tanksize_placeholder">Enter tank size</div>
+
+        <label id="measuredropdown_label" for="measuredropdown">Unit</label>
+        <select id="measuredropdown">
+          <option>gal</option>
+          <option>L</option>
+        </select>
+
+        <button id="clearbutton" aria-label="Clear">
+          <div id="vector_clear" aria-hidden="true"></div>
+        </button>
+
+        <div id="chevrondown">
+          <div id="vector_chevrondown"></div>
+        </div>
+
+        <div id="unitlabel">Unit</div>
+
+        <button id="savebutton" class="webbutton">
+          <span id="savebutton_label">Save</span>
+        </button>
+      </div>
+
+      <!-- Calibration buttons container -->
+      <div id="calibrationbuttonsfr">
+        <button id="startcalibbtn" class="webbutton">
+          <span id="startcalibbtn_label">Start Calibration</span>
+        </button>
+
+        <div id="calib_frame">
+          <div id="instructions">
+            <div id="instructiontext">Follow on-screen steps to complete calibration.</div>
+          </div>
+
+          <button id="emptytankbtn" class="webbutton">
+            <span id="emptytankbtn_label">Empty Tank</span>
+          </button>
+
+          <button id="tankhalfbtn" class="webbutton">
+            <span id="tankhalfbtn_label">Half</span>
+          </button>
+
+          <button id="tankfullbtn" class="webbutton">
+            <span id="tankfullbtn_label">Full</span>
+          </button>
+        </div>
+      </div>
+      </div>
+    </div>
+
+    <script src="script.js"></script>
+  </body>
+</html>

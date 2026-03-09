@@ -1,0 +1,606 @@
+* {
+  box-sizing: border-box;
+}
+
+/* Status / small status bar elements */
+#frame {
+  position: absolute;
+  right: 32px;
+  top: 24px;
+  width: 239px;
+  height: 25px;
+  overflow: hidden;
+  z-index: 9998;
+}
+
+#group {
+  position: absolute;
+  top: 2px;
+  width: 168px;
+  height: 18px;
+}
+
+#statusbar {
+  position: absolute;
+  width: 168px;
+  height: 18px;
+  border-radius: 10px;
+  background: #858585;
+}
+
+#statuslightstuff {
+  position: absolute;
+  left: 21px;
+  top: 2px;
+  width: 126px;
+  height: 14px;
+  font-family: 'Inter';
+  font-style: normal;
+  font-weight: 400;
+  font-size: 12px;
+  line-height: 14px;
+  white-space: nowrap;
+  text-align: center;
+  align-items: center;
+  color: #000000;
+}
+
+#statuslight {
+  position: absolute;
+  left: 174px;
+  width: 23px;
+  height: 22px;
+  background: #e040fb;
+  border-radius: 50%;
+}
+
+#refreshbutton {
+  position: absolute;
+  left: 202px;
+  width: 28px;
+  height: 25px;
+  border-radius: 4px;
+  background: #575757;
+}
+
+#label {
+  position: absolute;
+  left: -59.5px;
+  top: 2.5px;
+  width: 147px;
+  height: 20px;
+  font-family: 'Inter';
+  font-style: normal;
+  font-weight: 600;
+  font-size: 14px;
+  line-height: 20px;
+  letter-spacing: -0.08px;
+  text-transform: uppercase;
+  white-space: nowrap;
+  text-align: center;
+  color: #ffffff;
+}
+
+
+body {
+  margin: 0;
+  width: 100vw;
+  height: 100vh;
+
+  background: lightgrey;
+  user-select: none;
+  -webkit-app-region: drag;
+}
+
+.app {
+  padding: 16px;
+}
+
+button,
+input,
+textarea,
+select {
+  -webkit-app-region: no-drag;
+  cursor: pointer;
+}
+
+
+/* Div styles for main app done in Lunacy/Figma... */
+
+#anaappframe {
+  position: relative;
+  width: 800px;
+  height: 650px;
+  overflow: hidden;
+  background: #c9c9c9;
+}
+
+#fileframe {
+  position: absolute;
+  left: 32px;
+  top: 334px;
+  width: 736px;
+  height: 287px;
+  overflow: hidden;
+  background: #c9c9c9;
+}
+
+#filepeek {
+  position: absolute;
+  width: 736px;
+  height: 287px;
+}
+
+/* Rectangle component - large variant for file area */
+.rectangle {
+  position: absolute;
+  border-radius: 10px;
+  background: #222222;
+}
+
+.rectangle--large {
+  width: 736px;
+  height: 287px;
+}
+
+/* File table prototype styles */
+#file-table-container {
+  position: absolute;
+  left: 12px;
+  top: 12px;
+  right: 12px;
+  bottom: 12px;
+  overflow: auto;
+  background: transparent;
+  padding: 4px;
+}
+
+#file-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-family: 'Inter', sans-serif;
+  font-size: 13px;
+}
+
+#file-table thead th {
+  text-align: left;
+  padding: 8px 10px;
+  color: #919191;
+  font-weight: 600;
+  background: rgba(0,0,0,0.02);
+}
+
+#file-table tbody td {
+  padding: 8px 10px;
+  border-bottom: 1px solid #e8e8e8;
+  color: #222;
+}
+
+#file-table tbody tr.selectable {
+  cursor: pointer;
+}
+
+#file-table tbody tr.selectable:hover {
+  background: #f6f9ff;
+}
+
+#file-table tbody tr.selected {
+  background: #d9ecff;
+}
+
+#graphframe {
+  position: absolute;
+  left: 32px;
+  top: 26px;
+  width: 437px;
+  height: 287px;
+  overflow: hidden;
+  background: #c9c9c9;
+}
+
+#graphbackground {
+  position: absolute;
+  width: 437px;
+  height: 287px;
+}
+
+.rectangle--medium {
+  width: 437px;
+  height: 287px;
+}
+
+#buttonframe {
+  position: absolute;
+  left: 532px;
+  top: 52px;
+  width: 220px;
+  height: 234px;
+  overflow: hidden;
+}
+
+/* Web button base + modifiers */
+.webbutton {
+  /* reset default button styles and keep layout rules */
+  position: absolute;
+  height: 54px;
+  border-radius: 4px;
+  background: #575757;
+  cursor: pointer;
+  -webkit-app-region: no-drag;
+  transition: transform 120ms ease, filter 120ms ease, box-shadow 120ms ease;
+  border: none;
+  padding: 0;
+  appearance: none;
+  -webkit-appearance: none;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.webbutton--full {
+  width: 220px;
+}
+
+/* Exit button variant: small, top-right corner */
+.exit-button {
+  width: 28px;
+  height: 28px;
+  padding: 0;
+  border-radius: 6px;
+  background: #e74c3c;
+  color: #ffffff;
+  font-size: 14px;
+  font-weight: 700;
+  line-height: 1;
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.exit-button:focus {
+  outline: 2px solid rgba(0,0,0,0.15);
+}
+
+/* pressed / active shading */
+.webbutton:active,
+.webbutton.pressed {
+  transform: translateY(1px);
+  filter: brightness(0.72);
+}
+
+/* Label base + position variants */
+.label {
+  position: absolute;
+  font-family: 'Inter';
+  font-style: normal;
+  font-weight: 600;
+  font-size: 14px;
+  line-height: 20px;
+  letter-spacing: -0.08px;
+  text-transform: uppercase;
+  white-space: wrap;
+  text-align: center;
+  color: #ffffff;
+}
+
+.label--1 {
+  left: 36.5px;
+  top: 17px;
+  width: 147px;
+  height: 20px;
+}
+
+.webbutton--small {
+  top: 90px;
+  width: 98px;
+}
+
+.label--2 {
+  left: 10.5px;
+  top: 17px;
+  width: 77px;
+  height: 20px;
+}
+
+.webbutton--small.right {
+  left: 122px;
+}
+
+.label--3 {
+  left: -9.5px;
+  top: 17px;
+  width: 117px;
+  height: 40px;
+}
+
+.webbutton--bottom {
+  top: 180px;
+  width: 220px;
+}
+
+.label--4 {
+  left: 57.5px;
+  top: 17px;
+  width: 105px;
+  height: 20px;
+}
+
+/* Ensure labels inside .webbutton are centered and can wrap to multiple lines */
+.webbutton .label {
+  position: static;
+  left: auto;
+  top: auto;
+  width: 100%;
+  height: auto;
+  display: inline-block;
+  white-space: normal;
+  text-align: center;
+  box-sizing: border-box;
+  padding: 0 8px;
+  line-height: 1.1;
+}
+
+/* Ensure the exit button remains on top by default */
+.exit-button {
+  z-index: 9999;
+}
+
+/* BELOW ARE THE CSS FOR CALIBRATE.HTML */
+
+/* Fill-out form and calibration styles (unique IDs, scoped to calibrate) */
+#calibrate-root #filloutformframe {
+  position: absolute;
+  left: 6px;
+  top: 16px;
+  width: 700px;
+  height: 160px;
+  overflow: hidden;
+  background: #e8e8e8;
+  border-radius: 8px;
+  padding: 12px;
+}
+
+#calibrate-root #tanksizeinput {
+  position: absolute;
+  left: 20px;
+  top: 36px;
+  width: 160px;
+  height: 40px;
+  border-radius: 6px;
+  background: #ffffff;
+  border: 1px solid #d1d5db;
+  padding: 6px 8px;
+}
+
+#calibrate-root #tanksize_placeholder {
+  position: absolute;
+  left: 20px;
+  top: 12px;
+  font-family: 'Inter';
+  font-style: normal;
+  font-weight: 400;
+  font-size: 13px;
+  color: #6b7280;
+}
+
+#calibrate-root #tanksizelabel {
+  position: absolute;
+  left: 200px;
+  top: 12px;
+  font-family: 'Inter';
+  font-weight: 600;
+  font-size: 14px;
+  color: #111827;
+}
+
+#calibrate-root #measuredropdown {
+  position: absolute;
+  left: 20px;
+  top: 86px;
+  width: 120px;
+  height: 40px;
+  border-radius: 6px;
+  background: #ffffff;
+  border: 1px solid #d1d5db;
+  padding: 6px 8px;
+}
+
+#calibrate-root #measuredropdown_label {
+  position: absolute;
+  left: 150px;
+  top: 90px;
+  font-family: 'Inter';
+  font-weight: 500;
+  font-size: 13px;
+  color: #111827;
+}
+
+#calibrate-root #clearbutton {
+  position: absolute;
+  left: 260px;
+  top: 36px;
+  width: 36px;
+  height: 36px;
+  border-radius: 6px;
+  background: transparent;
+  border: none;
+  opacity: 0.8;
+}
+
+#calibrate-root #vector_clear {
+  position: absolute;
+  left: 10px;
+  top: 10px;
+  width: 16px;
+  height: 16px;
+  background: #9ca3af;
+}
+
+#calibrate-root #chevrondown {
+  position: absolute;
+  left: 300px;
+  top: 86px;
+  width: 20px;
+  height: 20px;
+}
+
+#calibrate-root #vector_chevrondown {
+  position: absolute;
+  left: 4px;
+  top: 6px;
+  width: 12px;
+  height: 6px;
+  background: #9ca3af;
+}
+
+#calibrate-root #unitlabel {
+  position: absolute;
+  left: 140px;
+  top: 46px;
+  font-family: 'Inter';
+  font-weight: 500;
+  font-size: 13px;
+  color: #111827;
+}
+
+#calibrate-root #savebutton {
+  position: absolute;
+  left: 320px;
+  top: 36px;
+  width: 90px;
+  height: 40px;
+  border-radius: 6px;
+  background: #575757;
+  color: #ffffff;
+  border: none;
+}
+
+#calibrate-root #savebutton_label {
+  display: inline-block;
+  font-family: 'Inter';
+  font-weight: 600;
+  font-size: 14px;
+}
+
+#calibrate-root #calibrationbuttonsfr {
+  position: absolute;
+  left: 6px;
+  top: 190px;
+  width: 700px;
+  height: auto;
+  overflow: visible;
+  background: transparent;
+}
+
+#calibrate-root #startcalibbtn {
+  position: absolute;
+  left: 20px;
+  top: 8px;
+  width: 200px;
+  height: 44px;
+  border-radius: 6px;
+  background: #2f7cff;
+  color: #ffffff;
+  border: none;
+}
+
+#calibrate-root #startcalibbtn_label {
+  display: inline-block;
+  font-family: 'Inter';
+  font-weight: 600;
+  font-size: 14px;
+}
+
+#calibrate-root #calib_frame {
+  position: absolute;
+  left: 240px;
+  top: 8px;
+  width: 440px;
+  height: auto;
+  overflow: visible;
+  background: transparent;
+}
+
+#calibrate-root #instructions {
+  position: absolute;
+  left: 0px;
+  top: 60px;
+  width: 100%;
+  border-radius: 10px;
+  background: #f3f4f6;
+  padding: 12px;
+}
+
+#calibrate-root #instructiontext {
+  font-family: 'Inter';
+  font-weight: 400;
+  font-size: 14px;
+  color: #111827;
+}
+
+#calibrate-root #emptytankbtn {
+  position: absolute;
+  left: 6px;
+  top: 8px;
+  width: 140px;
+  height: 44px;
+  border-radius: 6px;
+  background: #575757;
+  color: #ffffff;
+  border: none;
+}
+
+#calibrate-root #emptytankbtn_label {
+  display: inline-block;
+  font-family: 'Inter';
+  font-weight: 600;
+  font-size: 14px;
+}
+
+#calibrate-root #tankhalfbtn {
+  position: absolute;
+  left: 156px;
+  top: 8px;
+  width: 140px;
+  height: 44px;
+  border-radius: 6px;
+  background: #575757;
+  color: #ffffff;
+  border: none;
+}
+
+#calibrate-root #tankhalfbtn_label {
+  display: inline-block;
+  font-family: 'Inter';
+  font-weight: 600;
+  font-size: 14px;
+}
+
+#calibrate-root #tankfullbtn {
+  position: absolute;
+  left: 306px;
+  top: 8px;
+  width: 140px;
+  height: 44px;
+  border-radius: 6px;
+  background: #575757;
+  color: #ffffff;
+  border: none;
+}
+
+#calibrate-root #tankfullbtn_label {
+  display: inline-block;
+  font-family: 'Inter';
+  font-weight: 600;
+  font-size: 14px;
+}
+
+#calibrate-root #background {
+  position: absolute;
+  width: 800px;
+  height: 650px;
+  background: #e8e8e8;
+}

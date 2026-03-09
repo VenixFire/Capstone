@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <title>app name</title>
+    <link rel="stylesheet" href="styles.css" />
+  </head>
+
+  <body>
+
+    <div id="anaappframe">
+      <!-- Exit button (top-right) -->
+      <button id="exit-button" class="webbutton exit-button" aria-label="Exit application">×</button>
+      <!-- structural elements referenced by styles.css -->
+      <div id="fileframe">
+        <div class="rectangle rectangle--large"></div>
+
+        <!-- Prototype file table to display JSON info -->
+        <div id="file-table-container" aria-label="File list">
+          <table id="file-table" role="table">
+            <thead>
+              <tr>
+                <th>Filename</th>
+                <th>Size</th>
+                <th>Modified</th>
+              </tr>
+            </thead>
+            <tbody>
+              <!-- Rows populated by script.js -->
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      <div id="filepeek">
+        <div id="filepeek_background"></div>
+      </div>
+      
+      <div id="graphframe">
+        <div class="rectangle rectangle--medium"></div>
+        <div id="graphbackground"></div>
+      </div>
+      
+      <div id="buttonframe">
+        <button class="webbutton webbutton--full">
+          <span class="label label--1">CHECK HEALTH</span>
+        </button>
+
+        <button id="calibrate-button" class="webbutton webbutton--small">
+          <span class="label label--2">CALIBRATE</span>
+        </button>
+
+        <button id="offload-button" class="webbutton webbutton--small right">
+          <span class="label label--3">OFF-LOAD</span>
+        </button>
+
+        <button class="webbutton webbutton--bottom">
+          <span class="label label--4">ANALYZE DATA</span>
+        </button>
+      </div>
+
+      <!-- Small status/frame group inserted per design -->
+      <div id="frame" aria-hidden="false">
+        <div id="group">
+          <div id="statusbar"></div>
+          <div id="statuslightstuff">STATUS INDICATOR</div>
+        </div>
+        <div id="statuslight" aria-hidden="true"></div>
+        <div id="refreshbutton" class="webbutton" role="button" aria-label="Refresh"></div>
+      </div>
+    </div>
+
+      <script src="script.js"></script>
+    </body>
+  </html>
