@@ -68,6 +68,18 @@ document.addEventListener("DOMContentLoaded", () => {
     });
   }
 
+  // Analyze button: open the local AI data analysis chat window
+  const analyzeBtn = document.getElementById('analyze-button');
+  if (analyzeBtn) {
+    analyzeBtn.addEventListener('click', () => {
+      if (window.electronAPI && typeof window.electronAPI.openAnalyze === 'function') {
+        window.electronAPI.openAnalyze();
+      } else {
+        window.open('analyze.html', '_blank', 'width=900,height=700');
+      }
+    });
+  }
+
   const offloadBtn = document.getElementById('offload-button');
   if (offloadBtn) {
     offloadBtn.addEventListener('click', async () => {
@@ -83,6 +95,9 @@ document.addEventListener("DOMContentLoaded", () => {
           endpoint: 'http://192.168.1.50:5000/offload'
         });
         alert(`Off-load complete. Added ${result.added} item(s). Library now has ${result.total} item(s).`);
+        if (typeof loadLibraryLogs === 'function') {
+          await loadLibraryLogs();
+        }
       } catch (error) {
         alert(`Off-load failed: ${error.message}`);
       } finally {
@@ -104,6 +119,56 @@ document.addEventListener("DOMContentLoaded", () => {
   // initialize
   updateStatusLight();
 
+  // Calibration instruction updates
+  const instructionText = document.getElementById('instructiontext');
+  const startCalibBtn = document.getElementById('startcalibbtn') || document.getElementById('startclibbtn');
+  const emptyTankBtn = document.getElementById('emptytankbtn');
+  const tankHalfBtn = document.getElementById('tankhalfbtn');
+  const tankFullBtn = document.getElementById('tankfullbtn');
+
+  const setStepEnabled = (btn, enabled) => {
+    if (!btn) return;
+    btn.disabled = !enabled;
+    btn.setAttribute('aria-disabled', String(!enabled));
+  };
+
+  // Initial state: only Start is active until calibration flow begins.
+  setStepEnabled(emptyTankBtn, false);
+  setStepEnabled(tankHalfBtn, false);
+  setStepEnabled(tankFullBtn, false);
+
+  if (instructionText && startCalibBtn) {
+    startCalibBtn.addEventListener('click', () => {
+      instructionText.textContent = 'Empty the tank, then press Empty Tank.';
+      setStepEnabled(emptyTankBtn, true);
+      setStepEnabled(tankHalfBtn, false);
+      setStepEnabled(tankFullBtn, false);
+    });
+  }
+
+  if (instructionText && emptyTankBtn) {
+    emptyTankBtn.addEventListener('click', () => {
+      instructionText.textContent = 'Fill the tank halfway';
+      setStepEnabled(emptyTankBtn, false);
+      setStepEnabled(tankHalfBtn, true);
+    });
+  }
+
+  if (instructionText && tankHalfBtn) {
+    tankHalfBtn.addEventListener('click', () => {
+      instructionText.textContent = 'Fill the tank completely';
+      setStepEnabled(tankHalfBtn, false);
+      setStepEnabled(tankFullBtn, true);
+    });
+  }
+
+  if (instructionText && tankFullBtn) {
+    tankFullBtn.addEventListener('click', () => {
+      instructionText.textContent = 'Calibration steps complete. Save your calibration settings.';
+      setStepEnabled(tankFullBtn, false);
+    });
+  }
+
   // wire refresh button to re-check status and update the light
   const refreshBtn = document.getElementById('refreshbutton');
   if (refreshBtn) {
@@ -114,18 +179,62 @@ document.addEventListener("DOMContentLoaded", () => {
 
   // Listen for status updates from main process
 
-  // --- File table prototype: populate from a sample JSON array and enable selectable rows ---
+  // --- File table + filepeek: show library logs and selected JSON entry details ---
   const fileTableBody = document.querySelector('#file-table tbody');
+  const filePeek = document.getElementById('filepeek');
+  const filePeekMeta = document.getElementById('filepeek_meta');
+  const filePeekText = document.getElementById('filepeek_text');
+  const filePeekClose = document.getElementById('filepeek_close');
 
-  const sampleFiles = [
-    { filename: 'data1.json', size: '14 KB', modified: '2026-02-01' },
-    { filename: 'results.json', size: '8 KB', modified: '2026-02-05' },
-    { filename: 'config.json', size: '1 KB', modified: '2026-01-28' }
-  ];
+  const formatBytes = (bytes) => {
+    if (!Number.isFinite(bytes) || bytes <= 0) return '0 B';
+    const units = ['B', 'KB', 'MB'];
+    let value = bytes;
+    let unitIdx = 0;
+    while (value >= 1024 && unitIdx < units.length - 1) {
+      value /= 1024;
+      unitIdx += 1;
+    }
+    return `${value.toFixed(unitIdx === 0 ? 0 : 1)} ${units[unitIdx]}`;
+  };
+
+  const formatIsoDate = (value) => {
+    const d = new Date(value);
+    if (Number.isNaN(d.getTime())) return value || '-';
+    return d.toLocaleString();
+  };
+
+  const hideFilePeek = () => {
+    if (!filePeek) return;
+    filePeek.classList.remove('active');
+  };
+
+  const showFilePeekEntry = (entry, filename, modified) => {
+    if (!filePeek || !filePeekMeta || !filePeekText) return;
+    filePeekMeta.textContent = `${filename} | ${modified}`;
+    filePeekText.textContent = JSON.stringify(entry, null, 2);
+    filePeek.classList.add('active');
+  };
+
+  if (filePeekClose) {
+    filePeekClose.addEventListener('click', hideFilePeek);
+  }
 
   function renderFileTable(files) {
     if (!fileTableBody) return;
     fileTableBody.innerHTML = '';
+
+    if (!Array.isArray(files) || files.length === 0) {
+      const tr = document.createElement('tr');
+      const td = document.createElement('td');
+      td.colSpan = 3;
+      td.textContent = 'No logs found in json-library.json.';
+      tr.appendChild(td);
+      fileTableBody.appendChild(tr);
+      hideFilePeek();
+      return;
+    }
+
     files.forEach((f, idx) => {
       const tr = document.createElement('tr');
       tr.classList.add('selectable');
@@ -149,8 +258,8 @@ document.addEventListener("DOMContentLoaded", () => {
         // clear previous selection
         const prev = fileTableBody.querySelector('tr.selected');
         if (prev && prev !== tr) prev.classList.remove('selected');
-        // toggle this row
-        tr.classList.toggle('selected');
+        tr.classList.add('selected');
+        showFilePeekEntry(f.entry, f.filename, f.modified);
       };
 
       tr.addEventListener('click', selectRow);
@@ -165,6 +274,38 @@ document.addEventListener("DOMContentLoaded", () => {
     });
   }
 
-  // initial render
-  renderFileTable(sampleFiles);
+  const loadLibraryLogs = async () => {
+    if (!fileTableBody) return;
+
+    if (!window.electronAPI || typeof window.electronAPI.getLibraryEntries !== 'function') {
+      renderFileTable([]);
+      return;
+    }
+
+    try {
+      const result = await window.electronAPI.getLibraryEntries();
+      const entries = Array.isArray(result?.entries) ? result.entries : [];
+      const fileModifiedAt = result?.fileModifiedAt;
+
+      const tableRows = entries.map((entry, idx) => {
+        const text = JSON.stringify(entry);
+        const bytes = new TextEncoder().encode(text).length;
+        const timestamp = entry && typeof entry === 'object' ? entry.timestamp : null;
+
+        return {
+          filename: `log-${idx + 1}.json`,
+          size: formatBytes(bytes),
+          modified: formatIsoDate(timestamp || fileModifiedAt),
+          entry
+        };
+      });
+
+      renderFileTable(tableRows);
+    } catch (error) {
+      console.error('Failed to load library logs:', error);
+      renderFileTable([]);
+    }
+  };
+
+  loadLibraryLogs();
 });

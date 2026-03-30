@@ -33,7 +33,14 @@
       </div>
 
       <div id="filepeek">
-        <div id="filepeek_background"></div>
+        <div id="filepeek_background">
+          <div id="filepeek_header">
+            <div id="filepeek_title">Log Details</div>
+            <button id="filepeek_close" aria-label="Close log details">Close</button>
+          </div>
+          <div id="filepeek_meta">Select a row to inspect the full JSON log.</div>
+          <pre id="filepeek_text"></pre>
+        </div>
       </div>
       
       <div id="graphframe">
@@ -54,7 +61,7 @@
           <span class="label label--3">OFF-LOAD</span>
         </button>
 
-        <button class="webbutton webbutton--bottom">
+        <button id="analyze-button" class="webbutton webbutton--bottom">
           <span class="label label--4">ANALYZE DATA</span>
         </button>
       </div>

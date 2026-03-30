@@ -1,0 +1,23 @@
+{
+  "entries": [
+    {
+      "tankId": "TANK-1",
+      "timestamp": "2026-03-30T09:00:00Z",
+      "fillLevelPercent": 12,
+      "status": "low"
+    },
+    {
+      "tankId": "TANK-1",
+      "timestamp": "2026-03-30T10:00:00Z",
+      "fillLevelPercent": 48,
+      "status": "mid"
+    },
+    {
+      "tankId": "TANK-1",
+      "timestamp": "2026-03-30T11:00:00Z",
+      "fillLevelPercent": 91,
+      "status": "high"
+    }
+  ],
+  "updatedAt": "2026-03-30T11:00:00Z"
+}
