@@ -11,6 +11,12 @@ Authors:
 
 """
 
+"""
+TODO:
+- add snapping weight for points
+
+"""
+
 # General Packages
 import time
 
@@ -23,13 +29,13 @@ import ResultLog
 
 if __name__ == "__main__":
     # get the device loaded
-    device = PowerMeter.PowerMeter(cmdLogEnb=True)
+    device = PowerMeter.PowerMeter() #cmdLogEnb=True)
     device.connect()
     
     # initialize device parameters
-    device.setMeasurementUnit("W")
+    device.setMeasurementUnit(PowerMeter.MODE_DBM)
     device.setWavelength(870)
-    device.setMeasurementRange(200e-6)
+    device.setMeasurementRange(2e-6)
 
     # prepare calibration manager
     calibration = Calibrations.Calibration()
@@ -44,7 +50,8 @@ if __name__ == "__main__":
     # generate a new calibration
     else:
         print(f"! No calibration present, creating a new one.")
-        calibration.create(device.getPowerReading)
+        nPoints = int(input('Enter number of calibration points:'))
+        calibration.create(device.getPowerReading, points=nPoints)
         calibration.load(Calibrations.DEFAULT_CAL_NAME)
 
     # reading cycle
@@ -52,9 +59,17 @@ if __name__ == "__main__":
         while True:
             val = device.getPowerReading()
             result = calibration.read(val)
+
+            msg = ''
+            if result == 0.0:
+                msg = 'Empty'
+            elif result == 1.0:
+                msg = 'Full'
+
             print("@ Measurement:", val)
-            print("@ Output:", result)
-            time.sleep(1.5)
+            print("@ Output:", msg)
+
+            time.sleep(3)
 
     except KeyboardInterrupt:
         device.disconnect()

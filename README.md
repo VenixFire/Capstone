@@ -30,6 +30,15 @@ Datalogger interfaces with Thorlabs PM60 Optic Power Meter to read optical power
 USB Power Control
 [https://github.com/mvp/uhubctl](https://github.com/mvp/uhubctl) 
 
+## Credentials
+Raspberry Pi
+> logger@vandaloptics
+> vandals
+
+Wi-Fi
+> VandalOptics
+> GoVandals!
+
 ## Notes
 - Volume should be a polynomial, I forget what shape, but it's not a linear fit.
 - Need to experiment, but it might spawn two apps

@@ -33,6 +33,9 @@ import scpi_util
 MAX_WAVELENGTH = 1500
 MIN_WAVELENGTH = 500
 
+MODE_DBM = "DBM"
+MODE_WATT = "W"
+
 
 # mute warnings
 warnings.filterwarnings("ignore")
