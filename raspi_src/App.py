@@ -33,7 +33,7 @@ if __name__ == "__main__":
     device.connect()
     
     # initialize device parameters
-    device.setMeasurementUnit(PowerMeter.MODE_DBM)
+    device.setMeasurementUnit(PowerMeter.MODE_WATT)
     device.setWavelength(870)
     device.setMeasurementRange(2e-6)
 
@@ -58,18 +58,18 @@ if __name__ == "__main__":
     try:
         while True:
             val = device.getPowerReading()
-            result = calibration.read(val)
+            #result = calibration.read(val)
 
-            msg = ''
-            if result == 0.0:
-                msg = 'Empty'
-            elif result == 1.0:
-                msg = 'Full'
+            # msg = ''
+            # if result == 0.0:
+            #     msg = 'Empty'
+            # elif result == 1.0:
+            #     msg = 'Full'
 
             print("@ Measurement:", val)
-            print("@ Output:", msg)
+            # print("@ Output:", msg)
 
-            time.sleep(3)
+            time.sleep(1)
 
     except KeyboardInterrupt:
         device.disconnect()

@@ -175,7 +175,7 @@ class PowerMeter:
     """AutoRange, 870nm, DBM"""
     def setDefaultOptions(self) -> None:
         self.__assertConnection()
-        self.setAutoRanging(True)
+        self.setMeasurementRange(None)
         self.setWavelength(870)
         self.setMeasurementUnit("DBM")
 
