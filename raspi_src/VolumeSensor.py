@@ -81,7 +81,6 @@ def stable_reading(meter: PowerMeter) -> tuple[float, float]:
     print(f"  Reading: {mean:.4e} W  (±{std:.2e}, {rejected} spikes rejected / {len(data)} samples)")
     return mean, std
 
-# ── Warmup ────────────────────────────────────────────────────────────────────
 
 def warmup(seconds=WARMUP_SECONDS):
     """Wait for source and meter to thermally stabilize."""
@@ -94,7 +93,6 @@ def warmup(seconds=WARMUP_SECONDS):
     except KeyboardInterrupt:
         print("\n  Warmup skipped.")
 
-# ── Calibration ───────────────────────────────────────────────────────────────
 
 def run_calibration(meter: PowerMeter) -> dict:
     """
@@ -154,7 +152,6 @@ def load_calibration() -> dict | None:
     print(f"Loaded calibration from {CAL_FILE}")
     return cal
 
-# ── Volume Estimation ─────────────────────────────────────────────────────────
 
 def estimate_volume(power_w: float, cal_table: dict) -> float:
     """
@@ -189,7 +186,6 @@ class VolumeReader:
     def get(self) -> float:
         return float(np.mean(self.buf)) if self.buf else float('nan')
 
-# ── Recording ────────────────────────────────────────────────────────────────
 
 def record_measurement(power: float, volume_raw: float, volume_est: float) -> None:
     """
@@ -227,8 +223,6 @@ def record_measurement(power: float, volume_raw: float, volume_est: float) -> No
         f.write(',\n  ' + json.dumps(entry) + '\n]')
         f.truncate()
 
-
-# ── Main ──────────────────────────────────────────────────────────────────────
 
 def main():
     meter = PowerMeter(cmdLogEnb=False)

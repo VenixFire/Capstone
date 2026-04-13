@@ -19,11 +19,11 @@ Datalogger interfaces with Thorlabs PM60 Optic Power Meter to read optical power
 
 ## Todo List
 - [x] Power Meter SCPI Interface
-- [~] Calibrations
-- [ ] Result Logging
+- [x] Calibrations
+- [x] Result Logging
 - [ ] Error Logging
 - [ ] Device Information
-- [ ] HTTP Content Service
+- [x] HTTP Content Service
 - [ ] Reformat all that for clarity / readability
 
 ## Important References

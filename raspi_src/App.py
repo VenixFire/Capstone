@@ -23,8 +23,6 @@ import time
 # System Packages
 import PowerMeter
 import Calibrations
-import ContentServe
-import ResultLog
 
 
 if __name__ == "__main__":
