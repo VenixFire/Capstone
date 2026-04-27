@@ -1,0 +1,170 @@
+[
+  {
+    "timestamp": 1777308384.4442055,
+    "reading": 1.5195251408450703e-06,
+    "volume_raw": 11.37175486314285,
+    "volume_est": 11.37175486314285
+  }
+,
+  {"timestamp": 1777308392.5910594, "reading": 1.519537037037037e-06, "volume_raw": 11.573259266405612, "volume_est": 11.47250706477423}
+,
+  {"timestamp": 1777308400.740041, "reading": 1.5195334579439252e-06, "volume_raw": 11.51263457039128, "volume_est": 11.485882899979913}
+,
+  {"timestamp": 1777308408.7591825, "reading": 1.520891838235294e-06, "volume_raw": 100.0, "volume_est": 33.614412174984935}
+,
+  {"timestamp": 1777308416.8777957, "reading": 1.5222119658119657e-06, "volume_raw": 100.0, "volume_est": 46.891529739987945}
+,
+  {"timestamp": 1777308424.967933, "reading": 1.5223649264705883e-06, "volume_raw": 100.0, "volume_est": 64.61717876735938}
+,
+  {"timestamp": 1777308433.0791414, "reading": 1.5224373484848484e-06, "volume_raw": 100.0, "volume_est": 82.30252691407826}
+,
+  {"timestamp": 1777308441.111548, "reading": 1.5227841044776122e-06, "volume_raw": 100.0, "volume_est": 100.0}
+,
+  {"timestamp": 1777308449.1455703, "reading": 1.522698188405797e-06, "volume_raw": 100.0, "volume_est": 100.0}
+,
+  {"timestamp": 1777308457.4400208, "reading": 1.5226773529411765e-06, "volume_raw": 100.0, "volume_est": 100.0}
+,
+  {"timestamp": 1777308465.525287, "reading": 1.5226850833333333e-06, "volume_raw": 100.0, "volume_est": 100.0}
+,
+  {"timestamp": 1777308473.5532618, "reading": 1.5225721167883212e-06, "volume_raw": 100.0, "volume_est": 100.0}
+,
+  {"timestamp": 1777308481.6885736, "reading": 1.522551052631579e-06, "volume_raw": 100.0, "volume_est": 100.0}
+,
+  {"timestamp": 1777308489.9055207, "reading": 1.5225637410071942e-06, "volume_raw": 100.0, "volume_est": 100.0}
+,
+  {"timestamp": 1777308497.9944925, "reading": 1.5225952205882352e-06, "volume_raw": 100.0, "volume_est": 100.0}
+,
+  {"timestamp": 1777308506.0514476, "reading": 1.5224757664233577e-06, "volume_raw": 100.0, "volume_est": 100.0}
+,
+  {"timestamp": 1777308514.1677344, "reading": 1.5225566666666666e-06, "volume_raw": 100.0, "volume_est": 100.0}
+,
+  {"timestamp": 1777308522.1916206, "reading": 1.5224910236220474e-06, "volume_raw": 100.0, "volume_est": 100.0}
+,
+  {"timestamp": 1777308530.2482862, "reading": 1.5223554744525547e-06, "volume_raw": 100.0, "volume_est": 100.0}
+,
+  {"timestamp": 1777308538.26327, "reading": 1.5224141007194244e-06, "volume_raw": 100.0, "volume_est": 100.0}
+,
+  {"timestamp": 1777308546.419313, "reading": 1.52224598540146e-06, "volume_raw": 100.0, "volume_est": 100.0}
+,
+  {"timestamp": 1777308554.4157982, "reading": 1.5222181617647057e-06, "volume_raw": 100.0, "volume_est": 100.0}
+,
+  {"timestamp": 1777308562.4365926, "reading": 1.5222102290076336e-06, "volume_raw": 100.0, "volume_est": 100.0}
+,
+  {"timestamp": 1777308570.48, "reading": 1.5220945323741009e-06, "volume_raw": 100.0, "volume_est": 100.0}
+,
+  {"timestamp": 1777308578.535727, "reading": 1.522161954887218e-06, "volume_raw": 100.0, "volume_est": 100.0}
+,
+  {"timestamp": 1777308586.5772715, "reading": 1.522099197080292e-06, "volume_raw": 100.0, "volume_est": 100.0}
+,
+  {"timestamp": 1777308594.5829432, "reading": 1.5219808955223881e-06, "volume_raw": 100.0, "volume_est": 100.0}
+,
+  {"timestamp": 1777308602.6687622, "reading": 1.522071603053435e-06, "volume_raw": 100.0, "volume_est": 100.0}
+,
+  {"timestamp": 1777308610.7590058, "reading": 1.5221165185185184e-06, "volume_raw": 100.0, "volume_est": 100.0}
+,
+  {"timestamp": 1777308618.871425, "reading": 1.5219782352941175e-06, "volume_raw": 100.0, "volume_est": 100.0}
+,
+  {"timestamp": 1777308626.9297245, "reading": 1.5218813636363638e-06, "volume_raw": 100.0, "volume_est": 100.0}
+,
+  {"timestamp": 1777308634.9982648, "reading": 1.5219860902255638e-06, "volume_raw": 100.0, "volume_est": 100.0}
+,
+  {"timestamp": 1777308643.008603, "reading": 1.5219958955223881e-06, "volume_raw": 100.0, "volume_est": 100.0}
+,
+  {"timestamp": 1777308651.0404315, "reading": 1.5218957894736842e-06, "volume_raw": 100.0, "volume_est": 100.0}
+,
+  {"timestamp": 1777308659.091695, "reading": 1.521918382352941e-06, "volume_raw": 100.0, "volume_est": 100.0}
+,
+  {"timestamp": 1777308667.1528103, "reading": 1.521821726618705e-06, "volume_raw": 100.0, "volume_est": 100.0}
+,
+  {"timestamp": 1777308675.1797938, "reading": 1.521749411764706e-06, "volume_raw": 100.0, "volume_est": 100.0}
+,
+  {"timestamp": 1777308683.1959515, "reading": 1.5216245185185184e-06, "volume_raw": 100.0, "volume_est": 100.0}
+,
+  {"timestamp": 1777308691.263978, "reading": 1.5216296296296296e-06, "volume_raw": 100.0, "volume_est": 100.0}
+,
+  {"timestamp": 1777308699.3297129, "reading": 1.5216428776978416e-06, "volume_raw": 100.0, "volume_est": 100.0}
+,
+  {"timestamp": 1777308707.3798068, "reading": 1.521594031007752e-06, "volume_raw": 100.0, "volume_est": 100.0}
+,
+  {"timestamp": 1777308715.5320568, "reading": 1.5214863432835823e-06, "volume_raw": 100.0, "volume_est": 100.0}
+,
+  {"timestamp": 1777308723.60257, "reading": 1.5214624460431655e-06, "volume_raw": 100.0, "volume_est": 100.0}
+,
+  {"timestamp": 1777308731.8340235, "reading": 1.521570076335878e-06, "volume_raw": 100.0, "volume_est": 100.0}
+,
+  {"timestamp": 1777308739.9439304, "reading": 1.521491515151515e-06, "volume_raw": 100.0, "volume_est": 100.0}
+,
+  {"timestamp": 1777308748.0207915, "reading": 1.521538102189781e-06, "volume_raw": 100.0, "volume_est": 100.0}
+,
+  {"timestamp": 1777308756.101591, "reading": 1.5215343884892087e-06, "volume_raw": 100.0, "volume_est": 100.0}
+,
+  {"timestamp": 1777308764.1868792, "reading": 1.5215199259259257e-06, "volume_raw": 100.0, "volume_est": 100.0}
+,
+  {"timestamp": 1777308772.2175105, "reading": 1.5215682962962963e-06, "volume_raw": 100.0, "volume_est": 100.0}
+,
+  {"timestamp": 1777308780.331754, "reading": 1.5215054744525548e-06, "volume_raw": 100.0, "volume_est": 100.0}
+,
+  {"timestamp": 1777308788.3716707, "reading": 1.521478222222222e-06, "volume_raw": 100.0, "volume_est": 100.0}
+,
+  {"timestamp": 1777308796.4175627, "reading": 1.521392824427481e-06, "volume_raw": 100.0, "volume_est": 100.0}
+,
+  {"timestamp": 1777308804.465113, "reading": 1.5214495620437956e-06, "volume_raw": 100.0, "volume_est": 100.0}
+,
+  {"timestamp": 1777308812.4944708, "reading": 1.521619e-06, "volume_raw": 100.0, "volume_est": 100.0}
+,
+  {"timestamp": 1777308820.5784297, "reading": 1.5216468656716419e-06, "volume_raw": 100.0, "volume_est": 100.0}
+,
+  {"timestamp": 1777308828.71925, "reading": 1.5214716666666667e-06, "volume_raw": 100.0, "volume_est": 100.0}
+,
+  {"timestamp": 1777308836.7888513, "reading": 1.521366e-06, "volume_raw": 100.0, "volume_est": 100.0}
+,
+  {"timestamp": 1777308844.9092534, "reading": 1.5214307352941177e-06, "volume_raw": 100.0, "volume_est": 100.0}
+,
+  {"timestamp": 1777308852.9540398, "reading": 1.521485238095238e-06, "volume_raw": 100.0, "volume_est": 100.0}
+,
+  {"timestamp": 1777308861.072203, "reading": 1.5215216176470588e-06, "volume_raw": 100.0, "volume_est": 100.0}
+,
+  {"timestamp": 1777308869.0979846, "reading": 1.5217291791044778e-06, "volume_raw": 100.0, "volume_est": 100.0}
+,
+  {"timestamp": 1777309093.7408814, "reading": 1.5216017647058825e-06, "volume_raw": 100.0, "volume_est": 100.0}
+,
+  {"timestamp": 1777309114.5379305, "reading": NaN, "volume_raw": NaN, "volume_est": NaN}
+,
+  {"timestamp": 1777309122.3639145, "reading": NaN, "volume_raw": NaN, "volume_est": NaN}
+,
+  {"timestamp": 1777309144.376129, "reading": 1.5220796268656717e-06, "volume_raw": 100.0, "volume_est": 100.0}
+,
+  {"timestamp": 1777309152.3680522, "reading": 1.5221935074626865e-06, "volume_raw": 100.0, "volume_est": 100.0}
+,
+  {"timestamp": 1777309160.457431, "reading": 1.5220841463414638e-06, "volume_raw": 100.0, "volume_est": 100.0}
+,
+  {"timestamp": 1777309168.5037386, "reading": 1.5221133582089552e-06, "volume_raw": 100.0, "volume_est": 100.0}
+,
+  {"timestamp": 1777309176.5940034, "reading": 1.522286271186441e-06, "volume_raw": 100.0, "volume_est": 100.0}
+,
+  {"timestamp": 1777309184.6444368, "reading": 1.5224671900826444e-06, "volume_raw": 100.0, "volume_est": 100.0}
+,
+  {"timestamp": 1777309192.8045435, "reading": 1.522670924369748e-06, "volume_raw": 100.0, "volume_est": 100.0}
+,
+  {"timestamp": 1777309200.896331, "reading": 1.518785483870968e-06, "volume_raw": 0.0, "volume_est": 80.0}
+,
+  {"timestamp": 1777309208.964837, "reading": 1.5231316379310344e-06, "volume_raw": 100.0, "volume_est": 80.0}
+,
+  {"timestamp": 1777309217.028839, "reading": 1.5230274242424242e-06, "volume_raw": 100.0, "volume_est": 80.0}
+,
+  {"timestamp": 1777309225.1958103, "reading": 1.5231044525547442e-06, "volume_raw": 100.0, "volume_est": 80.0}
+,
+  {"timestamp": 1777309233.3530653, "reading": 1.523100222222222e-06, "volume_raw": 100.0, "volume_est": 80.0}
+,
+  {"timestamp": 1777309241.4265034, "reading": 1.518639673913044e-06, "volume_raw": 0.0, "volume_est": 80.0}
+,
+  {"timestamp": 1777309249.5496576, "reading": 1.5230207199999998e-06, "volume_raw": 100.0, "volume_est": 80.0}
+,
+  {"timestamp": 1777309257.6145058, "reading": 1.5228254639175256e-06, "volume_raw": 100.0, "volume_est": 80.0}
+,
+  {"timestamp": 1777309265.6930397, "reading": 1.522498085106383e-06, "volume_raw": 100.0, "volume_est": 80.0}
+,
+  {"timestamp": 1777309273.669859, "reading": 1.522296962962963e-06, "volume_raw": 100.0, "volume_est": 80.0}
+,
+  {"timestamp": 1777309281.7226365, "reading": 1.522204888888889e-06, "volume_raw": 100.0, "volume_est": 100.0}
+]

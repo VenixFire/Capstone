@@ -33,7 +33,7 @@ SAMPLES_PER_READ    = 150           # samples averaged per measurement
 SAMPLE_DELAY        = 0.05          # seconds between samples (20 Hz)
 OUTLIER_SIGMA       = 2.5           # MAD sigma threshold for spike rejection
 
-CAL_LEVELS          = [0, 25, 50, 75, 100]   # % volume levels
+CAL_LEVELS          = [0, 20, 40, 60, 80, 100]   # % volume levels
 CAL_FILE            = "calibration.json"      # saved calibration data
 
 # ── Noise-Robust Reading ──────────────────────────────────────────────────────
