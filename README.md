@@ -1,11 +1,12 @@
 # Capstone
 VandalOptics capstone project.
+Datalogger and backend developed by Jack Chambers.
 
-`/raspi_src/` contains source code for datalogger
 
+## Target Devices
 Intended platform is Raspberry Pi (4b) using headless debian with latest version. 
-
 Datalogger interfaces with Thorlabs PM60 Optic Power Meter to read optical power levels.
+
 
 ## Libraries & Packages
 ### Python Libraries
@@ -16,6 +17,9 @@ Datalogger interfaces with Thorlabs PM60 Optic Power Meter to read optical power
 ### Packages
 - avahi-daemon (dns masking for http)
 - nmcli (enabling wifi access point; native on newer debian versions)
+
+### Necessary Setup
+It's necessary when deploying on Linux to provide proper read/write access to the power meter peripheral.
 
 ## Todo List
 - [x] Power Meter SCPI Interface
