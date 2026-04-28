@@ -41,7 +41,6 @@ USB_DEVICE_STRING = "USB0::4883::32948::250219304::0::INSTR"
 # mute warnings
 warnings.filterwarnings("ignore")
 
-
 # pm61 class
 class PowerMeter:
 
@@ -91,7 +90,7 @@ class PowerMeter:
     """
         Public Methods
     """
-    def connect(self) -> None:
+    def connect(self, specificId : str | None) -> None:
         print("# ATTEMPT TO CONNECT")
         
         # generate the resourcelist
@@ -106,6 +105,10 @@ class PowerMeter:
             return
 
         # Connect to pm61 (should be only available device)
+
+        if specificId:
+            deviceId = specificId
+
         self._deviceId = deviceId
         self._device = self._rm.open_resource(deviceId)
         print("# CONNECTION OPENED WITH", deviceId)
