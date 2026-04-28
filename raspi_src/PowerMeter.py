@@ -36,6 +36,7 @@ MIN_WAVELENGTH = 500
 MODE_DBM = "DBM"
 MODE_WATT = "W"
 
+USB_DEVICE_STRING = "USB0::4883::32948::250219304::0::INSTR"
 
 # mute warnings
 warnings.filterwarnings("ignore")
