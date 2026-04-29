@@ -28,16 +28,15 @@ SERVICE_FILE="/etc/systemd/system/vandaloptics-logger.service"
 ## User if
 if [[ "$USER" == "$ROOT" ]]; then
 
+# Install necessary linux packages
+echo
+echo "----// Installing Necessary System Packages"
+sudo apt install avahi-daemon network-manager python3 git
+
 # Install necessary python packages
 echo
 echo "----// Installing Necessary Python Packages"
 sudo apt install python3-pyvisa python3-zeroconf python3-psutil python3-numpy
-
-
-# Install necessary linux packages
-echo
-echo "----// Installing Necessary Packages"
-sudo apt install avahi-daemon network-manager
 
 # Creating DeviceData folders
 echo 
