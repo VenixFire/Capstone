@@ -91,7 +91,7 @@ class TeeLogger:
 
 def make_log_path() -> str:
     timestamp = datetime.now().strftime("%Y%m%d_%H%M%S")
-    return os.path.join(get_logs_dir(), f"VolumeSensorHeadless_{timestamp}.log")
+    return os.path.join(get_logs_dir(), f"VolumeSensorHeadless_{timestamp}.txt")
 
 # ── Device Description ────────────────────────────────────────────────────────
 
