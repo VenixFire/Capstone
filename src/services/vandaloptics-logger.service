@@ -1,13 +1,13 @@
 [Unit]
-Description=VandalOptics HeadlessLogger Service
+Description=VandalOptics Headless Logger Service
 After=network.target
 StartLimitIntervalSec=0
 [Service]
 Type=simple
 Restart=always
-RestartSec=1
+RestartSec=5
 User=logger
-ExecStart=python3 /home/logger/Capstone/src/VolumeSensorHeadless.py
+ExecStart=/home/logger/Capstone/start_logger.sh
 
 [Install]
 WantedBy=multi-user.target
