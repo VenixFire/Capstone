@@ -36,6 +36,10 @@ def get_calibrations_dir() -> str:
     return os.path.join(BASE_DIR, "Calibrations")
 
 
+def get_logs_dir() -> str:
+    return os.path.join(BASE_DIR, "Logs")
+
+
 def get_device_description_path() -> str:
     return os.path.join(BASE_DIR, "DeviceDescription.json")
 
@@ -311,14 +315,14 @@ def list_measurements():
 
 @app.route('/calibration')
 def calibration():
-    """Return a calibration file by name. Accepts ?=<filename>."""
+    """Return a calibration file by name. Accepts ?<filename>."""
     filename = request.query_string.decode()
     return serve_json_file(get_calibrations_dir(), filename)
 
 
 @app.route('/measurement')
 def measurement():
-    """Return a measurement file by name. Accepts ?=<filename>."""
+    """Return a measurement file by name. Accepts ?<filename>."""
     filename = request.query_string.decode()
     return serve_json_file(get_results_dir(), filename)
 
@@ -355,11 +359,11 @@ SETTINGS_HTML = """
 
 <table>
   <tr>
-    <td><label for="deviceName">Device Name: </label></td>
+    <td><label for="deviceName">Device name</label></td>
     <td><input id="deviceName" type="text" size="40"></td>
   </tr>
   <tr>
-    <td><label for="calSelect">Use Calibration: </label></td>
+    <td><label for="calSelect">Calibration file</label></td>
     <td>
       <select id="calSelect">
         <option value="">Loading...</option>
@@ -367,7 +371,7 @@ SETTINGS_HTML = """
     </td>
   </tr>
   <tr>
-    <td><label for="resultsSelect">Write Results To: </label></td>
+    <td><label for="resultsSelect">Results file</label></td>
     <td>
       <select id="resultsSelect">
         <option value="">Loading...</option>
@@ -379,6 +383,11 @@ SETTINGS_HTML = """
     <td><br><button onclick="saveSettings()">Save</button></td>
   </tr>
 </table>
+
+<hr>
+
+<h2>Logs</h2>
+<ul id="logList"><li>Loading...</li></ul>
 
 <script>
   async function loadSettings() {
@@ -436,7 +445,27 @@ SETTINGS_HTML = """
     }
   }
 
+  async function loadLogs() {
+    const res  = await fetch('/list/logs');
+    const logs = await res.json();
+    const ul   = document.getElementById('logList');
+    ul.innerHTML = '';
+    if (logs.length === 0) {
+      ul.innerHTML = '<li>No log files found.</li>';
+      return;
+    }
+    logs.forEach(name => {
+      const li = document.createElement('li');
+      const a  = document.createElement('a');
+      a.href        = '/log-view?' + encodeURIComponent(name);
+      a.textContent = name;
+      li.appendChild(a);
+      ul.appendChild(li);
+    });
+  }
+
   loadSettings();
+  loadLogs();
 </script>
 </body>
 </html>
@@ -469,6 +498,78 @@ def api_settings_post():
     desc.update(updates)
     save_device_description(desc)
     return jsonify({'ok': True})
+
+
+LOG_VIEW_HTML = """
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Log View</title>
+</head>
+<body>
+
+<p><a href="/settings">&#8592; Back to settings</a></p>
+<hr>
+
+<h1 id="logTitle">Loading...</h1>
+<pre id="logContent">Loading...</pre>
+
+<script>
+  const filename = decodeURIComponent(window.location.search.slice(1));
+  document.getElementById('logTitle').textContent = filename;
+  document.title = filename;
+
+  fetch('/log?' + encodeURIComponent(filename))
+    .then(res => {
+      if (!res.ok) throw new Error('HTTP ' + res.status);
+      return res.text();
+    })
+    .then(text => {
+      document.getElementById('logContent').textContent = text || '(empty)';
+    })
+    .catch(err => {
+      document.getElementById('logContent').textContent = 'Error loading log: ' + err.message;
+    });
+</script>
+</body>
+</html>
+"""
+
+
+@app.route('/log-view')
+def log_view_page():
+    """Render the log viewer page. Filename is passed as the query string."""
+    return render_template_string(LOG_VIEW_HTML)
+
+
+@app.route('/list/logs')
+def list_logs():
+    """Return a sorted list of log filenames in the Logs directory."""
+    logs_dir = get_logs_dir()
+    if not os.path.isdir(logs_dir):
+        return jsonify([])
+    names = sorted(os.listdir(logs_dir), reverse=True)
+    return jsonify(names)
+
+
+@app.route('/log')
+def log():
+    """Return the plaintext content of a log file. Accepts ?<filename>."""
+    filename = request.query_string.decode()
+    if not filename:
+        return 'No filename provided', 400
+
+    filename = os.path.basename(filename)
+    path = os.path.join(get_logs_dir(), filename)
+
+    if not os.path.exists(path):
+        return 'Log file not found', 404
+    try:
+        with open(path, 'r', errors='replace') as f:
+            return f.read(), 200, {'Content-Type': 'text/plain; charset=utf-8'}
+    except IOError as e:
+        return str(e), 500
 
 
 if __name__ == '__main__':
