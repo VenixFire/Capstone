@@ -17,9 +17,13 @@ AP_PWD="GoVandals!"
 VENDOR_ID=1313
 PRODUCT_ID=80b4
 
+
+
 # /etc/udev/rules.d/...
 RULE_FILE="/etc/udev/rules.d/ThorLabs.rules"
 AP_CONF_FILE="/etc/NetworkManager/system-connections/AccessPoint.nmconnection"
+SERVICE_FILE="/etc/systemd/system/vandaloptics-logger.service"
+
 
 ## User if
 if [[ "$USER" == "$ROOT" ]]; then
@@ -69,6 +73,34 @@ else
 echo "--// Brining AccessPoint up"
 sudo nmcli conn up $AP_ID
 fi
+
+
+# Define a new service for the logger to run off
+echo
+echo "----// Creating new vandaloptics-logger.service"
+if [ -f $SERVICE_FILE ]; then
+echo "--// Service already exists!"
+else
+echo "--// Service doesn't exist, creating service"
+sudo touch $SERVICE_FILE
+
+echo "
+[Unit]
+Description=VandalOptics Logger Service
+After=network.target
+StartLimitIntervalSec=0
+[Service]
+Type=simple
+Restart=always
+RestartSec=1
+User=logger
+ExecStart=/home/logger/Capstone/launch.sh
+
+[Install]
+WantedBy=multi-user.target
+" > $SERVICE_FILE
+fi
+
 
 
 ## User else
