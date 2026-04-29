@@ -52,10 +52,10 @@ if [[ "$USER" == "$ROOT" ]]; then
     else
         echo "--// Creating new AccessPoint connection"
         sudo nmcli dev wifi hotspot ifname wlan0 ssid $AP_NAME password $AP_PWD con-name $AP_ID
-        sudo nmcli conn up $AP_ID
     fi
 
     echo "--// Brining AccessPoint up"
+    sudo nmcli conn up $AP_ID
     
 
 else
