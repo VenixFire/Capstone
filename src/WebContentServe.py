@@ -386,7 +386,7 @@ SETTINGS_HTML = """
 
 <hr>
 
-<h2>Logs</h2>
+<h2>Service Logs</h2>
 <ul id="logList"><li>Loading...</li></ul>
 
 <script>
