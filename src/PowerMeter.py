@@ -113,12 +113,12 @@ class PowerMeter:
 
         
         self._device = self._rm.open_resource(self._deviceId)
-        print("# CONNECTION OPENED WITH", deviceId)
+        print("# CONNECTION OPENED WITH", self._deviceId)
 
         # print the device information
         # PM61A, 250219304 supposedly
-        self._device.write('*IDN?')
-        self._device.read('\n')
+        # self._device.write('*IDN?')
+        # self._device.read('\n')
         print("# DEVICE", self.__query("SYST:SENS:IDN?"))
 
     

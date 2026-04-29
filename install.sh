@@ -14,8 +14,8 @@ AP_ID="AccessPoint"
 AP_NAME="VandalOptics"
 AP_PWD="GoVandals!"
 
-VENDOR_ID=4883
-PRODUCT_ID=32948
+VENDOR_ID=1313
+PRODUCT_ID=80b4
 
 # /etc/udev/rules.d/...
 RULE_FILE="/etc/udev/rules.d/ThorLabs.rules"
