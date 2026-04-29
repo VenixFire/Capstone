@@ -4,7 +4,7 @@ echo ---- VANDAL OPTICS INSTALLING DEPENDENCIES ----
 USER=$(whoami)
 ROOT=root
 
-if [[$USER -eq $ROOT]]; then
+if [[ "$USER" == "$ROOT" ]]; then
 
     echo // Installing Necessary Python Packages
     #
