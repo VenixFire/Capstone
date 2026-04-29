@@ -95,13 +95,12 @@ class PowerMeter:
     """
     def connect(self) -> None:
         print("# ATTEMPT TO CONNECT")
-        
+        # generate the resourcelist
+        resourceList = self._rm.list_resources()
+        print("# AVAILABLE RESOURCES", resourceList, "\n")
 
         # select a device from the list
         if self._deviceId == None:
-            # generate the resourcelist
-            resourceList = self._rm.list_resources()
-            print("# RESOURCES", resourceList, "\n")
             
             # ensure there is the one device connected
             if len(resourceList) > 0:
