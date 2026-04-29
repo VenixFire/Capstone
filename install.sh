@@ -14,6 +14,9 @@ AP_ID="AccessPoint"
 AP_NAME="VandalOptics"
 AP_PWD="GoVandals!"
 
+VENDOR_ID=4883
+PRODUCT_ID=32948
+
 # /etc/udev/rules.d/...
 RULE_FILE="/etc/udev/rules.d/ThorLabs.rules"
 AP_CONF_FILE="/etc/NetworkManager/system-connections/AccessPoint.nmconnection"
@@ -41,10 +44,10 @@ echo "--// Rule file already exists, no overwriting"
 else
 touch /etc/udev/rules.d/ThorLabs.rules
 echo -e "
-# USBTMC Instruments
+# USBTMC Instruments List
 
 # ThorLabs PM61
-SUBSYSTEMS=="usb", ACTION=="add", ATTRS{idVendor}=="1313", ATTRS{idProduct}=="80b4", GROUP="usbtmc", MODE="0660"
+SUBSYSTEMS=="usb", ACTION=="add", ATTRS{idVendor}=="$VENDOR_ID", ATTRS{idProduct}=="$PRODUCT_ID", GROUP="usbtmc", MODE="0660"
 " > /etc/udev/rules.d/ThorLabs.rules
 echo "--// Successfully wrote rules"
 fi
