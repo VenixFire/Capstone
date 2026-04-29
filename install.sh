@@ -77,30 +77,9 @@ fi
 
 # Define a new service for the logger to run off
 echo
-echo "----// Creating new vandaloptics-logger.service"
-if [ -f $SERVICE_FILE ]; then
-echo "--// Service already exists!"
-else
-echo "--// Service doesn't exist, creating service"
-sudo touch $SERVICE_FILE
-
-echo "
-[Unit]
-Description=VandalOptics Logger Service
-After=network.target
-StartLimitIntervalSec=0
-[Service]
-Type=simple
-Restart=always
-RestartSec=1
-User=logger
-ExecStart=/home/logger/Capstone/launch.sh
-
-[Install]
-WantedBy=multi-user.target
-" > $SERVICE_FILE
-fi
-
+echo "----// Cloning services"
+cp -u ./src/services/vandaloptics-logger.service /etc/systemd/system/vandaloptics-logger.service
+cp -u ./src/services/vandaloptics-webserve.service /etc/systemd/system/vandaloptics-webserve.service
 
 
 ## User else
