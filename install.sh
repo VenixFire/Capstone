@@ -60,8 +60,12 @@ echo "--// Creating new AccessPoint connection"
 sudo nmcli dev wifi hotspot ifname wlan0 ssid $AP_NAME password $AP_PWD con-name $AP_ID
 fi
 
+if [ $1 == '--ignore-ap' ]; then
+echo "--// Ignoring AccessPoint"
+else
 echo "--// Brining AccessPoint up"
 sudo nmcli conn up $AP_ID
+fi
 
 
 ## User else
