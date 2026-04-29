@@ -230,7 +230,7 @@ if __name__ == "__main__":
 
     try:
         while True:
-            val = device.getPowerReading()
+            val = device.__query("MEAS:POW?")
             print("# MEASUREMENT:", val)
             time.sleep(0.5)
 
