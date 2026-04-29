@@ -92,7 +92,7 @@ class PowerMeter:
     """
         Public Methods
     """
-    def connect(self, specificId : str | None) -> None:
+    def connect(self, specificId=None) -> None:
         print("# ATTEMPT TO CONNECT")
         
         # generate the resourcelist
@@ -222,7 +222,7 @@ class PowerMeter:
 """
 if __name__ == "__main__":
     device = PowerMeter(cmdLogEnb=True)
-    device.connect()
+    device.connect(USB_DEVICE_STRING)
     
     device.setMeasurementUnit("W")
     device.setWavelength(870)
