@@ -9,8 +9,4 @@
 ## Title
 echo "---- VANDAL OPTICS LAUNCH SCRIPT ----"
 
-## Start avahi-daemon for dns resolution
-echo -e "\n--// Launching avahi-daemon"
-
-## Enable Access Point with network-manager
-echo -e "\n--// Enabling Access Point"
+nohup python3 src/VolumeSensor.py
