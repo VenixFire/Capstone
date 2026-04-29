@@ -111,15 +111,18 @@ class PowerMeter:
             
             self._deviceId = deviceId
 
-        
-        self._device = self._rm.open_resource(self._deviceId)
-        print("# CONNECTION OPENED WITH", self._deviceId)
+        try:
+            self._device = self._rm.open_resource(self._deviceId)
+            print("# CONNECTION OPENED WITH", self._deviceId)
 
-        # print the device information
-        # PM61A, 250219304 supposedly
-        # self._device.write('*IDN?')
-        # self._device.read('\n')
-        print("# DEVICE", self.__query("SYST:SENS:IDN?"))
+            # print the device information
+            # PM61A, 250219304 supposedly
+            # self._device.write('*IDN?')
+            # self._device.read('\n')
+            print("# DEVICE", self.__query("SYST:SENS:IDN?"))
+        except:
+            print("# FAILED TO CONNECT TO DEVICE! | RETRYING IN 3S")
+            time.sleep(3)
 
     
     def disconnect(self) -> None:

@@ -182,7 +182,10 @@ def main():
     print(f"[INFO] Calibration loaded ({len(cal_table)} levels)")
 
     meter = PowerMeter(deviceId=USB_DEVICE_STRING, cmdLogEnb=False)
-    meter.connect()
+
+    while meter.isConnected() == False:
+        meter.connect()
+        
     meter.setMeasurementUnit(MODE_WATT)
     meter.setWavelength(WAVELENGTH_NM)
     meter.setMeasurementRange(MEASUREMENT_RANGE)
