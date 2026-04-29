@@ -386,7 +386,16 @@ SETTINGS_HTML = """
 
 <hr>
 
-<h2>Service Logs</h2>
+<h2>New measurement file</h2>
+<p>
+  <input id="newMeasName" type="text" size="30" placeholder="filename (without .json)">
+  <button onclick="createMeasurement()">Create</button>
+  <span id="newMeasMsg"></span>
+</p>
+
+<hr>
+
+<h2>Logs</h2>
 <ul id="logList"><li>Loading...</li></ul>
 
 <script>
@@ -464,6 +473,32 @@ SETTINGS_HTML = """
     });
   }
 
+  async function createMeasurement() {
+    const input = document.getElementById('newMeasName');
+    const msg   = document.getElementById('newMeasMsg');
+    let name = input.value.trim();
+    if (!name) { msg.textContent = 'Enter a filename.'; return; }
+    if (!name.endsWith('.json')) name += '.json';
+
+    const res = await fetch('/api/measurement/create', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ filename: name }),
+    });
+    const data = await res.json();
+    if (res.ok) {
+      msg.textContent = name + ' created.';
+      input.value = '';
+      // Refresh the results dropdown
+      const measRes  = await fetch('/list/measurements');
+      const measFiles = await measRes.json();
+      const settings  = await (await fetch('/api/settings')).json();
+      populateSelect('resultsSelect', measFiles, settings.ResultsFile);
+    } else {
+      msg.textContent = 'Error: ' + (data.error || res.status);
+    }
+  }
+
   loadSettings();
   loadLogs();
 </script>
@@ -513,6 +548,7 @@ LOG_VIEW_HTML = """
 <hr>
 
 <h1 id="logTitle">Loading...</h1>
+<p><button onclick="deleteLog()">Delete this log</button></p>
 <pre id="logContent">Loading...</pre>
 
 <script>
@@ -531,6 +567,21 @@ LOG_VIEW_HTML = """
     .catch(err => {
       document.getElementById('logContent').textContent = 'Error loading log: ' + err.message;
     });
+
+  async function deleteLog() {
+    if (!confirm('Delete ' + filename + '?')) return;
+    const res = await fetch('/api/log/delete', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ filename }),
+    });
+    if (res.ok) {
+      window.location.href = '/settings';
+    } else {
+      const data = await res.json();
+      alert('Error: ' + (data.error || res.status));
+    }
+  }
 </script>
 </body>
 </html>
@@ -549,7 +600,10 @@ def list_logs():
     logs_dir = get_logs_dir()
     if not os.path.isdir(logs_dir):
         return jsonify([])
-    names = sorted(os.listdir(logs_dir), reverse=True)
+    names = sorted(
+        (f for f in os.listdir(logs_dir) if f.endswith('.txt')),
+        reverse=True
+    )
     return jsonify(names)
 
 
@@ -570,6 +624,45 @@ def log():
             return f.read(), 200, {'Content-Type': 'text/plain; charset=utf-8'}
     except IOError as e:
         return str(e), 500
+
+
+@app.route('/api/measurement/create', methods=['POST'])
+def api_measurement_create():
+    """Create a new empty measurement JSON file in MeasurementResults."""
+    body = request.get_json(silent=True)
+    if not body or not body.get('filename'):
+        return jsonify({'error': 'No filename provided'}), 400
+
+    filename = os.path.basename(body['filename'])
+    if not filename.endswith('.json'):
+        filename += '.json'
+
+    path = os.path.join(get_results_dir(), filename)
+    os.makedirs(get_results_dir(), exist_ok=True)
+
+    if os.path.exists(path):
+        return jsonify({'error': 'File already exists'}), 409
+
+    with open(path, 'w') as f:
+        json.dump([], f)
+    return jsonify({'ok': True, 'filename': filename})
+
+
+@app.route('/api/log/delete', methods=['POST'])
+def api_log_delete():
+    """Delete a log file by name."""
+    body = request.get_json(silent=True)
+    if not body or not body.get('filename'):
+        return jsonify({'error': 'No filename provided'}), 400
+
+    filename = os.path.basename(body['filename'])
+    path = os.path.join(get_logs_dir(), filename)
+
+    if not os.path.exists(path):
+        return jsonify({'error': 'File not found'}), 404
+
+    os.remove(path)
+    return jsonify({'ok': True})
 
 
 if __name__ == '__main__':
