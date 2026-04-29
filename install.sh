@@ -77,9 +77,15 @@ fi
 
 # Define a new service for the logger to run off
 echo
-echo "----// Cloning services"
-cp -u ./src/services/vandaloptics-logger.service /etc/systemd/system/vandaloptics-logger.service
-cp -u ./src/services/vandaloptics-webserve.service /etc/systemd/system/vandaloptics-webserve.service
+echo "----// Creating Services"
+
+echo "--// Copying Services"
+sudo cp -u ./src/services/vandaloptics-logger.service /etc/systemd/system/vandaloptics-logger.service
+sudo cp -u ./src/services/vandaloptics-webserve.service /etc/systemd/system/vandaloptics-webserve.service
+
+echo "--// Starting Services"
+sudo systemctl start vandaloptics-logger.service
+sudo systemctl start vandaloptics-webserve.service
 
 
 ## User else
