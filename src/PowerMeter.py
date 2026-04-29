@@ -80,32 +80,32 @@ class PowerMeter:
     def __write(self, command : str) -> None:
         self.__assertConnection()
         if self._cmdLogEnb:
-            self.__log("$ w: ", command)
+            self.__log(f"$ w: {command}")
         self._device.write(command)
 
 
     def __query(self, command : str) -> any:
         self.__assertConnection()
         if self._cmdLogEnb:
-            self.__log("$ q:", command)
+            self.__log(f"$ q {command}")
         return self._device.query(command)
     
 
-    def __log(self, *args):
+    def __log(self, stringToPrint):
         if self._logger != None:
-            self._logger.log(f"[INFO] {args}")
+            self._logger.log(f"[INFO] {stringToPrint}")
         else:
-            print(*args)
+            print(stringToPrint)
 
 
     """
         Public Methods
     """
     def connect(self, logger=None) -> None:
-        self.__log("ATTEMPT TO CONNECT", logger)
+        self.__log("ATTEMPTING TO CONNECT")
         # generate the resourcelist
         resourceList = self._rm.list_resources()
-        self.__log("AVAILABLE RESOURCES", resourceList, "\n")
+        self.__log(f"AVAILABLE RESOURCES: {resourceList}")
 
         # select a device from the list
         if self._deviceId == None:
@@ -121,20 +121,20 @@ class PowerMeter:
 
         try:
             self._device = self._rm.open_resource(self._deviceId)
-            self.__log("CONNECTION OPENED WITH", self._deviceId)
+            self.__log(f"CONNECTION OPENED WITH ID: {self._deviceId}")
 
             # print the device information
             # PM61A, 250219304 supposedly
             # self._device.write('*IDN?')
             # self._device.read('\n')
-            self.__log("DEVICE", self.__query("SYST:SENS:IDN?"))
+            self.__log(f"DEVICE {self.__query("SYST:SENS:IDN?")}")
         except:
             self.__log("FAILED TO CONNECT TO DEVICE! | RETRYING IN 3S")
             time.sleep(3)
 
     
     def disconnect(self) -> None:
-        self.__log("DISCONNECTING FROM", self._deviceId)
+        self.__log(f"DISCONNECTING FROM ID: {self._deviceId}")
         #Close device in any case
         if self._device is not None:
             try:
