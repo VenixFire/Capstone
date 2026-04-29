@@ -17,4 +17,4 @@ echo -e "\n--// Enabling Access Point"
 
 FILE="/home/logger/created_by_service"
 touch $FILE
-$(whoami) > $FILE
+echo "$(whoami)" > $FILE
