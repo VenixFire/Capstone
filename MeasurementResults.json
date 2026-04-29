@@ -1,102 +1,154 @@
 [
   {
-    "timestamp": 1777313401.2360864,
-    "reading": 1.5300242335766423e-06,
-    "volume_raw": 100.0,
-    "volume_est": 100.0
+    "timestamp": 1777431184.0144982,
+    "reading": 1.4976985185185186e-06,
+    "volume_raw": 94.04117561512074,
+    "volume_est": 94.04117561512074
   }
 ,
-  {"timestamp": 1777313409.1652691, "reading": 1.5297078571428571e-06, "volume_raw": 100.0, "volume_est": 100.0}
+  {"timestamp": 1777431192.6120229, "reading": 1.498298905109489e-06, "volume_raw": 0.0, "volume_est": 47.02058780756037}
 ,
-  {"timestamp": 1777313417.1655903, "reading": 1.529363357142857e-06, "volume_raw": 100.0, "volume_est": 100.0}
+  {"timestamp": 1777431200.6797335, "reading": 1.498696476190476e-06, "volume_raw": 0.0, "volume_est": 31.347058538373577}
 ,
-  {"timestamp": 1777313425.0948975, "reading": 1.5291065942028986e-06, "volume_raw": 100.0, "volume_est": 100.0}
+  {"timestamp": 1777431208.7177994, "reading": 1.4990732624113478e-06, "volume_raw": 0.0, "volume_est": 23.510293903780184}
 ,
-  {"timestamp": 1777313433.111359, "reading": 1.528803211678832e-06, "volume_raw": 100.0, "volume_est": 100.0}
+  {"timestamp": 1777431217.0772169, "reading": 1.4996022123893802e-06, "volume_raw": 0.0, "volume_est": 18.808235123024147}
 ,
-  {"timestamp": 1777313441.116989, "reading": 1.5285916279069767e-06, "volume_raw": 100.0, "volume_est": 100.0}
+  {"timestamp": 1777431225.1281874, "reading": 1.499939577464789e-06, "volume_raw": 0.0, "volume_est": 0.0}
 ,
-  {"timestamp": 1777313449.1403124, "reading": 1.528035813953488e-06, "volume_raw": 100.0, "volume_est": 100.0}
+  {"timestamp": 1777431233.2089431, "reading": 1.5003272058823531e-06, "volume_raw": 0.0, "volume_est": 0.0}
 ,
-  {"timestamp": 1777313457.1998408, "reading": 1.5276733834586466e-06, "volume_raw": 100.0, "volume_est": 100.0}
+  {"timestamp": 1777431241.297086, "reading": 1.5005939130434783e-06, "volume_raw": 0.0, "volume_est": 0.0}
 ,
-  {"timestamp": 1777313465.235899, "reading": 1.5274081818181818e-06, "volume_raw": 100.0, "volume_est": 100.0}
+  {"timestamp": 1777431249.4259136, "reading": 1.5008976119402983e-06, "volume_raw": 0.0, "volume_est": 0.0}
 ,
-  {"timestamp": 1777313473.266193, "reading": 1.5270651879699245e-06, "volume_raw": 100.0, "volume_est": 100.0}
+  {"timestamp": 1777431257.607932, "reading": 1.5012589928057556e-06, "volume_raw": 0.0, "volume_est": 0.0}
 ,
-  {"timestamp": 1777313481.299944, "reading": 1.526848045112782e-06, "volume_raw": 100.0, "volume_est": 100.0}
+  {"timestamp": 1777431265.6571422, "reading": 1.501480955882353e-06, "volume_raw": 0.0, "volume_est": 0.0}
 ,
-  {"timestamp": 1777313489.4230666, "reading": 1.5265694117647058e-06, "volume_raw": 100.0, "volume_est": 100.0}
+  {"timestamp": 1777431273.7226954, "reading": 1.5018510791366906e-06, "volume_raw": 0.0, "volume_est": 0.0}
 ,
-  {"timestamp": 1777313497.4952722, "reading": 1.5267217164179105e-06, "volume_raw": 100.0, "volume_est": 100.0}
+  {"timestamp": 1777431281.8212688, "reading": 1.5022027338129497e-06, "volume_raw": 0.0, "volume_est": 0.0}
 ,
-  {"timestamp": 1777313505.5956619, "reading": 1.526760802919708e-06, "volume_raw": 100.0, "volume_est": 100.0}
+  {"timestamp": 1777431289.9479916, "reading": 1.5023670588235294e-06, "volume_raw": 0.0, "volume_est": 0.0}
 ,
-  {"timestamp": 1777313513.6330466, "reading": 1.5266273333333332e-06, "volume_raw": 100.0, "volume_est": 100.0}
+  {"timestamp": 1777431298.0275857, "reading": 1.502499927536232e-06, "volume_raw": 0.0, "volume_est": 0.0}
 ,
-  {"timestamp": 1777313521.7120566, "reading": 1.5264481203007517e-06, "volume_raw": 100.0, "volume_est": 100.0}
+  {"timestamp": 1777431306.1464903, "reading": 1.4999559595959593e-06, "volume_raw": 0.0, "volume_est": 0.0}
 ,
-  {"timestamp": 1777313529.7123156, "reading": 1.526319318181818e-06, "volume_raw": 100.0, "volume_est": 100.0}
+  {"timestamp": 1777431314.2903638, "reading": 1.5042616216216215e-06, "volume_raw": 0.0, "volume_est": 0.0}
 ,
-  {"timestamp": 1777313537.7674637, "reading": 1.5262077697841727e-06, "volume_raw": 100.0, "volume_est": 100.0}
+  {"timestamp": 1777431322.3348696, "reading": 1.505886944444444e-06, "volume_raw": 0.0, "volume_est": 0.0}
 ,
-  {"timestamp": 1777313545.856764, "reading": 1.5260377372262775e-06, "volume_raw": 100.0, "volume_est": 100.0}
+  {"timestamp": 1777431330.4050443, "reading": 1.5028649999999997e-06, "volume_raw": 0.0, "volume_est": 0.0}
 ,
-  {"timestamp": 1777313553.9366155, "reading": 1.5259184057971014e-06, "volume_raw": 100.0, "volume_est": 100.0}
+  {"timestamp": 1777431338.563371, "reading": 1.503287857142857e-06, "volume_raw": 0.0, "volume_est": 0.0}
 ,
-  {"timestamp": 1777313561.951279, "reading": 1.5257824427480916e-06, "volume_raw": 100.0, "volume_est": 100.0}
+  {"timestamp": 1777431346.675768, "reading": 1.5037169402985077e-06, "volume_raw": 0.0, "volume_est": 0.0}
 ,
-  {"timestamp": 1777313569.9077485, "reading": 1.5256457553956833e-06, "volume_raw": 100.0, "volume_est": 100.0}
+  {"timestamp": 1777431354.9314787, "reading": 1.5041076428571428e-06, "volume_raw": 0.0, "volume_est": 0.0}
 ,
-  {"timestamp": 1777313577.8898387, "reading": 1.5257176642335765e-06, "volume_raw": 100.0, "volume_est": 100.0}
+  {"timestamp": 1777431363.0649455, "reading": 1.504514495412844e-06, "volume_raw": 0.0, "volume_est": 0.0}
 ,
-  {"timestamp": 1777313585.869098, "reading": 1.5257200000000002e-06, "volume_raw": 100.0, "volume_est": 100.0}
+  {"timestamp": 1777431371.1338086, "reading": 1.5047831958762885e-06, "volume_raw": 0.0, "volume_est": 0.0}
 ,
-  {"timestamp": 1777313593.8352544, "reading": 1.5256106106870227e-06, "volume_raw": 100.0, "volume_est": 100.0}
+  {"timestamp": 1777431379.2485075, "reading": 1.5052133898305086e-06, "volume_raw": 0.0, "volume_est": 0.0}
 ,
-  {"timestamp": 1777313601.8682597, "reading": 1.5254648507462687e-06, "volume_raw": 100.0, "volume_est": 100.0}
+  {"timestamp": 1777431387.360712, "reading": 1.5054976086956523e-06, "volume_raw": 0.0, "volume_est": 0.0}
 ,
-  {"timestamp": 1777313609.9367886, "reading": 1.5253475187969924e-06, "volume_raw": 100.0, "volume_est": 100.0}
+  {"timestamp": 1777431395.439643, "reading": 1.5056912857142856e-06, "volume_raw": 0.0, "volume_est": 0.0}
 ,
-  {"timestamp": 1777313617.9806578, "reading": 1.525186818181818e-06, "volume_raw": 100.0, "volume_est": 100.0}
+  {"timestamp": 1777431403.4649098, "reading": 1.5059640845070422e-06, "volume_raw": 0.0, "volume_est": 0.0}
 ,
-  {"timestamp": 1777313626.0137956, "reading": 1.525069375e-06, "volume_raw": 100.0, "volume_est": 100.0}
+  {"timestamp": 1777431411.6372063, "reading": 1.506243875968992e-06, "volume_raw": 0.0, "volume_est": 0.0}
 ,
-  {"timestamp": 1777313634.0767813, "reading": 1.5249155970149255e-06, "volume_raw": 100.0, "volume_est": 100.0}
+  {"timestamp": 1777431419.6395648, "reading": 1.506402695652174e-06, "volume_raw": 0.0, "volume_est": 0.0}
 ,
-  {"timestamp": 1777313642.198762, "reading": 1.524725e-06, "volume_raw": 100.0, "volume_est": 100.0}
+  {"timestamp": 1777431427.781293, "reading": 1.5066541007194245e-06, "volume_raw": 0.0, "volume_est": 0.0}
 ,
-  {"timestamp": 1777313650.3642423, "reading": 1.5247037313432835e-06, "volume_raw": 100.0, "volume_est": 100.0}
+  {"timestamp": 1777431435.88847, "reading": 1.5068219999999999e-06, "volume_raw": 0.0, "volume_est": 0.0}
 ,
-  {"timestamp": 1777313658.4643095, "reading": 1.5245072180451129e-06, "volume_raw": 100.0, "volume_est": 100.0}
+  {"timestamp": 1777431444.0214925, "reading": 1.5069760714285714e-06, "volume_raw": 0.0, "volume_est": 0.0}
 ,
-  {"timestamp": 1777313666.5319026, "reading": 1.5245297692307693e-06, "volume_raw": 100.0, "volume_est": 100.0}
+  {"timestamp": 1777431452.1419287, "reading": 1.5069484782608696e-06, "volume_raw": 0.0, "volume_est": 0.0}
 ,
-  {"timestamp": 1777313674.5108826, "reading": 1.524298686131387e-06, "volume_raw": 100.0, "volume_est": 100.0}
+  {"timestamp": 1777431460.1833115, "reading": 1.5071655395683453e-06, "volume_raw": 0.0, "volume_est": 0.0}
 ,
-  {"timestamp": 1777313682.5520935, "reading": 1.5241952554744528e-06, "volume_raw": 100.0, "volume_est": 100.0}
+  {"timestamp": 1777431468.2406034, "reading": 1.5074072340425532e-06, "volume_raw": 0.0, "volume_est": 0.0}
 ,
-  {"timestamp": 1777313690.6710417, "reading": 1.5242796296296293e-06, "volume_raw": 100.0, "volume_est": 100.0}
+  {"timestamp": 1777431476.3015974, "reading": 1.5073363503649635e-06, "volume_raw": 0.0, "volume_est": 0.0}
 ,
-  {"timestamp": 1777313698.6996803, "reading": 1.5241809848484848e-06, "volume_raw": 100.0, "volume_est": 100.0}
+  {"timestamp": 1777431484.4886007, "reading": 1.5075002173913045e-06, "volume_raw": 0.0, "volume_est": 0.0}
 ,
-  {"timestamp": 1777313706.7334144, "reading": 1.5241165413533835e-06, "volume_raw": 100.0, "volume_est": 100.0}
+  {"timestamp": 1777431492.6192253, "reading": 1.5076073758865247e-06, "volume_raw": 0.0, "volume_est": 0.0}
 ,
-  {"timestamp": 1777313714.7261658, "reading": 1.5240500775193799e-06, "volume_raw": 100.0, "volume_est": 100.0}
+  {"timestamp": 1777431500.6672647, "reading": 1.507629295774648e-06, "volume_raw": 0.0, "volume_est": 0.0}
 ,
-  {"timestamp": 1777313722.8069134, "reading": 1.5239498529411766e-06, "volume_raw": 100.0, "volume_est": 100.0}
+  {"timestamp": 1777431508.816525, "reading": 1.5077076851851851e-06, "volume_raw": 0.0, "volume_est": 0.0}
 ,
-  {"timestamp": 1777313730.8420856, "reading": 1.5239264925373135e-06, "volume_raw": 100.0, "volume_est": 100.0}
+  {"timestamp": 1777431516.9152694, "reading": 1.5077917142857144e-06, "volume_raw": 0.0, "volume_est": 0.0}
 ,
-  {"timestamp": 1777313738.9066854, "reading": 1.5238132575757578e-06, "volume_raw": 100.0, "volume_est": 100.0}
+  {"timestamp": 1777431524.9860747, "reading": 1.5078607194244606e-06, "volume_raw": 0.0, "volume_est": 0.0}
 ,
-  {"timestamp": 1777313746.9595754, "reading": 1.5237838686131386e-06, "volume_raw": 100.0, "volume_est": 100.0}
+  {"timestamp": 1777431533.233674, "reading": 1.5079790566037736e-06, "volume_raw": 0.0, "volume_est": 0.0}
 ,
-  {"timestamp": 1777313755.0578227, "reading": 1.5237652307692309e-06, "volume_raw": 100.0, "volume_est": 100.0}
+  {"timestamp": 1777431541.2809238, "reading": 1.5080439568345324e-06, "volume_raw": 0.0, "volume_est": 0.0}
 ,
-  {"timestamp": 1777313763.1603713, "reading": 1.5236715441176472e-06, "volume_raw": 100.0, "volume_est": 100.0}
+  {"timestamp": 1777431549.3271706, "reading": 1.508039014084507e-06, "volume_raw": 0.0, "volume_est": 0.0}
 ,
-  {"timestamp": 1777313771.149269, "reading": 1.5235739393939395e-06, "volume_raw": 100.0, "volume_est": 100.0}
+  {"timestamp": 1777431557.4109151, "reading": 1.5080020155038762e-06, "volume_raw": 0.0, "volume_est": 0.0}
 ,
-  {"timestamp": 1777313779.0373456, "reading": 1.033532711111111e-09, "volume_raw": 100.0, "volume_est": 100.0}
+  {"timestamp": 1777431565.498036, "reading": 1.5079829365079366e-06, "volume_raw": 0.0, "volume_est": 0.0}
+,
+  {"timestamp": 1777431573.5998764, "reading": 1.508099661016949e-06, "volume_raw": 0.0, "volume_est": 0.0}
+,
+  {"timestamp": 1777431581.7241156, "reading": 1.5082702836879433e-06, "volume_raw": 0.0, "volume_est": 0.0}
+,
+  {"timestamp": 1777431589.8362813, "reading": 1.5085374100719425e-06, "volume_raw": 0.0, "volume_est": 0.0}
+,
+  {"timestamp": 1777431597.889306, "reading": 1.5085705673758867e-06, "volume_raw": 0.0, "volume_est": 0.0}
+,
+  {"timestamp": 1777431606.0611851, "reading": 1.5069140666666667e-06, "volume_raw": 0.0, "volume_est": 0.0}
+,
+  {"timestamp": 1777431614.1548054, "reading": 1.5054920999999995e-06, "volume_raw": 0.0, "volume_est": 0.0}
+,
+  {"timestamp": 1777431622.2696161, "reading": 1.508499712230216e-06, "volume_raw": 0.0, "volume_est": 0.0}
+,
+  {"timestamp": 1777431630.343242, "reading": 1.5083660283687944e-06, "volume_raw": 0.0, "volume_est": 0.0}
+,
+  {"timestamp": 1777431638.4128387, "reading": 1.5083710909090908e-06, "volume_raw": 0.0, "volume_est": 0.0}
+,
+  {"timestamp": 1777431646.515752, "reading": 1.5084840875912409e-06, "volume_raw": 0.0, "volume_est": 0.0}
+,
+  {"timestamp": 1777431654.7000778, "reading": 1.5086575886524823e-06, "volume_raw": 0.0, "volume_est": 0.0}
+,
+  {"timestamp": 1777431662.7782254, "reading": 1.5093196503496503e-06, "volume_raw": 0.0, "volume_est": 0.0}
+,
+  {"timestamp": 1777431670.875787, "reading": 1.5094863120567377e-06, "volume_raw": 0.0, "volume_est": 0.0}
+,
+  {"timestamp": 1777431679.0100517, "reading": 1.5094656756756757e-06, "volume_raw": 0.0, "volume_est": 0.0}
+,
+  {"timestamp": 1777431687.1893213, "reading": 1.5095167391304348e-06, "volume_raw": 0.0, "volume_est": 0.0}
+,
+  {"timestamp": 1777431695.3113532, "reading": 1.5096724285714286e-06, "volume_raw": 0.0, "volume_est": 0.0}
+,
+  {"timestamp": 1777431703.3479054, "reading": 1.5097379856115107e-06, "volume_raw": 0.0, "volume_est": 0.0}
+,
+  {"timestamp": 1777431711.4672663, "reading": 1.5097174825174827e-06, "volume_raw": 0.0, "volume_est": 0.0}
+,
+  {"timestamp": 1777431719.5501997, "reading": 1.5097947445255474e-06, "volume_raw": 0.0, "volume_est": 0.0}
+,
+  {"timestamp": 1777431727.7371626, "reading": 1.5100736029411765e-06, "volume_raw": 0.0, "volume_est": 0.0}
+,
+  {"timestamp": 1777431735.8834434, "reading": 1.5101452727272727e-06, "volume_raw": 0.0, "volume_est": 0.0}
+,
+  {"timestamp": 1777431744.1008217, "reading": 1.5103230275229357e-06, "volume_raw": 0.0, "volume_est": 0.0}
+,
+  {"timestamp": 1777431752.2189562, "reading": 1.5103121582733812e-06, "volume_raw": 0.0, "volume_est": 0.0}
+,
+  {"timestamp": 1777431760.3352563, "reading": 1.5101792086330935e-06, "volume_raw": 0.0, "volume_est": 0.0}
+,
+  {"timestamp": 1777431768.443633, "reading": 1.5099841843971631e-06, "volume_raw": 0.0, "volume_est": 0.0}
+,
+  {"timestamp": 1777431776.366555, "reading": 1.5100518181818182e-06, "volume_raw": 0.0, "volume_est": 0.0}
 ]

@@ -19,7 +19,7 @@ import time
 import json
 import os
 from collections import deque
-from PowerMeter import PowerMeter, MODE_WATT
+from PowerMeter import PowerMeter, MODE_WATT, USB_DEVICE_STRING
 
 RESULTS_FILE = "MeasurementResults.json"
 
@@ -226,7 +226,7 @@ def record_measurement(power: float, volume_raw: float, volume_est: float) -> No
 
 def main():
     meter = PowerMeter(cmdLogEnb=False)
-    meter.connect()
+    meter.connect(USB_DEVICE_STRING)
 
     meter.setMeasurementUnit(MODE_WATT)
     meter.setWavelength(WAVELENGTH_NM)
