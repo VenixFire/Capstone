@@ -21,9 +21,9 @@ if [[ "$USER" == "$ROOT" ]]; then
     # /etc/udev/rules.d
     RULE_FILE="/etc/udev/rules.d/ThorLabs.rules"
     echo "--// Adding rules for PyVisa Access"
-    if [ -f $RULE_FILE ]; then
+    if [ -f "$RULE_FILE" ]; then
         touch /etc/udev/rules.d/ThorLabs.rules
-        echo \#USBTMC Instruments\n\# ThorLabs PM61\nSUBSYSTEMS=="usb", ACTION=="add", ATTRS{idVendor}=="1313", ATTRS{idProduct}=="80b4", GROUP="usbtmc", MODE="0660" > /etc/udev/rules.d/ThorLabs.rules
+        echo -e "\#USBTMC Instruments\n\# ThorLabs PM61\nSUBSYSTEMS=="usb", ACTION=="add", ATTRS{idVendor}=="1313", ATTRS{idProduct}=="80b4", GROUP="usbtmc", MODE="0660"" > /etc/udev/rules.d/ThorLabs.rules
         echo "--// Successfully wrote rules"
     else
         echo "--// Rule file already exists, no overwriting"
