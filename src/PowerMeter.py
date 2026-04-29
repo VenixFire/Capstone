@@ -233,10 +233,10 @@ if __name__ == "__main__":
 
     try:
         while True:
-            #val = device.getPowerReading()
-            val = device.rawQuery("MEAS:POW?")
+            val = device.getPowerReading()
+            #val = device.rawQuery("MEAS:POW?")
             print("# MEASUREMENT:", val)
-            time.sleep(0.5)
+            time.sleep(1.5)
 
     except KeyboardInterrupt:
         device.disconnect()

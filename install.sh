@@ -23,7 +23,7 @@ if [[ "$USER" == "$ROOT" ]]; then
     # Install necessary python packages
     echo
     echo "----// Installing Necessary Python Packages"
-    sudo apt install python3-pyvisa python3-zeroconf python3-psutil
+    sudo apt install python3-pyvisa python3-zeroconf python3-psutil python3-numpy
 
 
     # Install necessary linux packages
