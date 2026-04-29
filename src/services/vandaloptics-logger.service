@@ -5,7 +5,7 @@ StartLimitIntervalSec=0
 [Service]
 Type=simple
 Restart=always
-RestartSec=5
+RestartSec=30
 User=logger
 ExecStart=/home/logger/Capstone/start_logger.sh
 
