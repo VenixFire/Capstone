@@ -85,6 +85,7 @@ sudo cp -u ./src/services/vandaloptics-webserve.service /etc/systemd/system/vand
 echo "--// Starting Services"
 sudo systemctl start vandaloptics-logger.service
 sudo systemctl start vandaloptics-webserve.service
+sudo systemctl daemon-reload
 
 echo "----// Installation complete!"
 echo
