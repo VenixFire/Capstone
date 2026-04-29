@@ -36,7 +36,7 @@ sudo apt install avahi-daemon network-manager python3 git
 # Install necessary python packages
 echo
 echo "----// Installing Necessary Python Packages"
-sudo apt install python3-pyvisa python3-zeroconf python3-psutil python3-numpy
+sudo apt install python3-pyvisa python3-zeroconf python3-psutil python3-numpy python3-flask
 
 # Creating DeviceData folders
 echo 
