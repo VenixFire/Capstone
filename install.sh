@@ -39,6 +39,10 @@ echo
 echo "----// Installing Necessary Packages"
 sudo apt install avahi-daemon network-manager
 
+# Creating DeviceData folders
+echo 
+echo "----// Creating DeviceData Folders"
+python3 ./src/CreateDeviceData.py
 
 # Define ruleset for pyvisa access to peripherals
 echo
