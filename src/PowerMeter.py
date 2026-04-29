@@ -53,13 +53,14 @@ class PowerMeter:
     """
 
     # Constructor
-    def __init__(self, deviceId=None, isSimulated=False, cmdLogEnb=False):
+    def __init__(self, logger=None, deviceId=None, isSimulated=False, cmdLogEnb=False):
 
         self._deviceId = deviceId
         self._device = None
         self._unit = None
         self._range = None
         self._cmdLogEnb = cmdLogEnb
+        self._logger = logger
 
         # simulation
         if isSimulated:
@@ -79,25 +80,32 @@ class PowerMeter:
     def __write(self, command : str) -> None:
         self.__assertConnection()
         if self._cmdLogEnb:
-            print("$ w: ", command)
+            self.__log("$ w: ", command)
         self._device.write(command)
 
 
     def __query(self, command : str) -> any:
         self.__assertConnection()
         if self._cmdLogEnb:
-            print("$ q:", command)
+            self.__log("$ q:", command)
         return self._device.query(command)
+    
+
+    def __log(self, *args):
+        if self._logger != None:
+            self._logger.log(f"[INFO] {args}")
+        else:
+            print(*args)
 
 
     """
         Public Methods
     """
-    def connect(self) -> None:
-        print("# ATTEMPT TO CONNECT")
+    def connect(self, logger=None) -> None:
+        self.__log("ATTEMPT TO CONNECT", logger)
         # generate the resourcelist
         resourceList = self._rm.list_resources()
-        print("# AVAILABLE RESOURCES", resourceList, "\n")
+        self.__log("AVAILABLE RESOURCES", resourceList, "\n")
 
         # select a device from the list
         if self._deviceId == None:
@@ -106,27 +114,27 @@ class PowerMeter:
             if len(resourceList) > 0:
                 deviceId = resourceList[0]
             else:
-                print("! NO DEVICES CONNECTED")
+                self.__log("! NO DEVICES CONNECTED")
                 return
             
             self._deviceId = deviceId
 
         try:
             self._device = self._rm.open_resource(self._deviceId)
-            print("# CONNECTION OPENED WITH", self._deviceId)
+            self.__log("CONNECTION OPENED WITH", self._deviceId)
 
             # print the device information
             # PM61A, 250219304 supposedly
             # self._device.write('*IDN?')
             # self._device.read('\n')
-            print("# DEVICE", self.__query("SYST:SENS:IDN?"))
+            self.__log("DEVICE", self.__query("SYST:SENS:IDN?"))
         except:
-            print("# FAILED TO CONNECT TO DEVICE! | RETRYING IN 3S")
+            self.__log("FAILED TO CONNECT TO DEVICE! | RETRYING IN 3S")
             time.sleep(3)
 
     
     def disconnect(self) -> None:
-        print("# DISCONNECTING FROM", self._deviceId)
+        self.__log("DISCONNECTING FROM", self._deviceId)
         #Close device in any case
         if self._device is not None:
             try:
@@ -216,10 +224,6 @@ class PowerMeter:
     
     def rawQuery(self, cmd):
         return self.__query(cmd)
-    
-
-    # def printQuery(self, cmd) -> None:
-    #     print(self.__query(cmd))
 
 
 

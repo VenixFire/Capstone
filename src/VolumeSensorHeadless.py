@@ -237,7 +237,7 @@ def main():
     cal_table = load_calibration(cal_path, logger)
     logger.log(f"[INFO]  Calibration loaded ({len(cal_table)} levels)")
 
-    meter = PowerMeter(deviceId=USB_DEVICE_STRING, cmdLogEnb=False)
+    meter = PowerMeter(deviceId=USB_DEVICE_STRING, cmdLogEnb=False, logger=logger)
 
     while meter.isConnected() == False:
         meter.connect()
