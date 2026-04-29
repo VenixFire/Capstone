@@ -5,6 +5,7 @@ USER=$(whoami)
 ROOT=root
 
 if [[$USER -eq $ROOT]]; then
+
     echo // Installing Necessary Python Packages
     #
     sudo apt install python3-pyvisa python3-zeroconf python3-psutil
@@ -18,7 +19,7 @@ if [[$USER -eq $ROOT]]; then
 
 
     # /etc/udev/rules.d
-    RULE_FILE=/etc/udev/rules.d/ThorLabs.rules
+    RULE_FILE="/etc/udev/rules.d/ThorLabs.rules"
     echo // Adding rules for PyVisa Access
     if [ -f $RULE_FILE ]; then
         touch /etc/udev/rules.d/ThorLabs.rules
@@ -26,6 +27,8 @@ if [[$USER -eq $ROOT]]; then
     else
         echo // Rule file already exists!
     fi
+
+
 else
     echo // You need to run 'sudo install.sh'
 fi
