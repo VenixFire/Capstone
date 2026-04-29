@@ -22,19 +22,19 @@ if [[ "$USER" == "$ROOT" ]]; then
 
     # Install necessary python packages
     echo
-    echo "--// Installing Necessary Python Packages"
+    echo "----// Installing Necessary Python Packages"
     sudo apt install python3-pyvisa python3-zeroconf python3-psutil
 
 
     # Install necessary linux packages
     echo
-    echo "--// Installing Necessary Packages"
+    echo "----// Installing Necessary Packages"
     sudo apt install avahi-daemon network-manager
 
 
     # Define ruleset for pyvisa access to peripherals
     echo
-    echo "--// Adding rules for PyVisa Access"
+    echo "----// Adding rules for PyVisa Access"
     if [ -f "$RULE_FILE" ]; then
         echo "--// Rule file already exists, no overwriting"
     else
@@ -45,12 +45,14 @@ if [[ "$USER" == "$ROOT" ]]; then
 
 
     # Check for existing network configuration
-    if $(nmcli conn | grep $AP_ID); then
+    echo 
+    echo "----// Establishing AccessPoint"
+    if nmcli conn | grep -q "$AP_ID"; then
         echo "--// Access point config file already exists."
     else
         echo "--// Creating new AccessPoint connection"
         sudo nmcli dev wifi hotspot ifname wlan0 ssid $AP_NAME password $AP_PWD con-name $AP_ID
-        sudo nmcli conn up 
+        sudo nmcli conn up $AP_ID
     fi
 
 else
