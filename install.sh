@@ -24,10 +24,6 @@ RULE_FILE="/etc/udev/rules.d/ThorLabs.rules"
 AP_CONF_FILE="/etc/NetworkManager/system-connections/AccessPoint.nmconnection"
 SERVICE_FILE="/etc/systemd/system/vandaloptics-logger.service"
 
-
-## User if
-if [[ "$USER" == "$ROOT" ]]; then
-
 # Install necessary linux packages
 echo
 echo "----// Installing Necessary System Packages"
@@ -49,8 +45,8 @@ echo "----// Adding rules for PyVisa Access"
 if [ -f "$RULE_FILE" ]; then
 echo "--// Rule file already exists, no overwriting"
 else
-touch /etc/udev/rules.d/ThorLabs.rules
-echo -e "
+sudo touch /etc/udev/rules.d/ThorLabs.rules
+sudo echo -e "
 # USBTMC Instruments List
 
 # ThorLabs PM61
@@ -93,9 +89,3 @@ sudo systemctl start vandaloptics-webserve.service
 echo "----// Installation complete!"
 echo
 echo "Please run src/CalibrationTool.py to create a calibration!" 
-
-
-## User else
-else
-echo "--// You need to run as sudo -- 'sudo ./install.sh'"
-fi
