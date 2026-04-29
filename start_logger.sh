@@ -7,6 +7,6 @@ LOG_DIR="$SCRIPT_DIR/DeviceData/Logs"
 
 mkdir -p "$LOG_DIR"
 
-LOG_FILE="$LOG_DIR/VolumeSensorHeadless_$(date +%Y%m%d_%H%M%S).log"
+LOG_FILE="$LOG_DIR/VolumeSensorHeadless_$(date +%Y%m%d_%H%M%S).txt"
 
 python3 "$SCRIPT_DIR/src/VolumeSensorHeadless.py" >> "$LOG_FILE" 2>&1
