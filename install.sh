@@ -7,7 +7,7 @@
 # Testfor logs folder
 
 if [ -d "logs" ]; then
-    # do nothing
+    echo -e "\r"
 else
     mkdir logs
 fi
