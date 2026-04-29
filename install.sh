@@ -12,4 +12,7 @@ else
     mkdir logs
 fi
 
-scripts/install.sh >> /logs/install_log_$(date +%F).txt
+LOG_NAME="install_log_$(date +%F).txt"
+touch logs/$LOG_NAME
+
+scripts/install.sh >> logs/$LOG_NAME
