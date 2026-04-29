@@ -37,7 +37,7 @@ sudo apt install python3-pyvisa python3-zeroconf python3-psutil python3-numpy
 # Install necessary linux packages
 echo
 echo "----// Installing Necessary Packages"
-sudo apt install avahi-daemon network-managers
+sudo apt install avahi-daemon network-manager
 
 
 # Define ruleset for pyvisa access to peripherals
