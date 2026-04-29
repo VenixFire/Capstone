@@ -211,6 +211,9 @@ class PowerMeter:
     def isConnected(self) -> bool:
         return (self._device != None)
     
+    def rawQuery(self, cmd):
+        return self.__query(cmd)
+    
 
     # def printQuery(self, cmd) -> None:
     #     print(self.__query(cmd))
@@ -230,7 +233,8 @@ if __name__ == "__main__":
 
     try:
         while True:
-            val = device.__query("MEAS:POW?")
+            #val = device.getPowerReading()
+            val = device.rawQuery("MEAS:POW?")
             print("# MEASUREMENT:", val)
             time.sleep(0.5)
 
