@@ -7,6 +7,9 @@ Description:
     Reads configuration from DeviceDescription.json, loads calibration from disk,
     and runs the measurement loop without any user interaction.
 
+    All output is written to both stdout and a timestamped .log file under
+    DeviceData/Logs/.
+
     Exit conditions:
         SIGINT / Ctrl+C  — clean shutdown
         Missing calibration file — exits with error
@@ -28,6 +31,7 @@ import json
 import os
 import sys
 from collections import deque
+from datetime import datetime
 from PowerMeter import PowerMeter, MODE_WATT, USB_DEVICE_STRING
 
 # ── Configuration ─────────────────────────────────────────────────────────────
@@ -38,19 +42,65 @@ SAMPLES_PER_READ  = 150       # samples averaged per measurement
 SAMPLE_DELAY      = 0.05      # seconds between samples (20 Hz)
 OUTLIER_SIGMA     = 2.5       # MAD sigma threshold for spike rejection
 
+# ── Paths ─────────────────────────────────────────────────────────────────────
+
+BASE_DIR = os.path.abspath(os.path.join(os.path.dirname(__file__), "..", "DeviceData"))
+
+DEVICE_DESCRIPTION_FILE = os.path.join(BASE_DIR, "DeviceDescription.json")
+
+
+def get_logs_dir() -> str:
+    return os.path.join(BASE_DIR, "Logs")
+
+# ── Logging ───────────────────────────────────────────────────────────────────
+
+class TeeLogger:
+    """
+    Writes every log() call to both stdout and an open log file.
+    Also redirects stderr so uncaught exceptions appear in the log.
+    """
+
+    def __init__(self, log_path: str):
+        os.makedirs(os.path.dirname(log_path), exist_ok=True)
+        self._file   = open(log_path, "w", buffering=1)  # line-buffered
+        self._stdout = sys.stdout
+        self._stderr = sys.stderr
+        sys.stderr   = self  # redirect stderr so tracebacks also go to the log
+
+    def log(self, message: str) -> None:
+        ts   = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+        line = f"{ts}  {message}"
+        print(line, file=self._stdout)
+        print(line, file=self._file)
+
+    # Make TeeLogger usable as a stderr replacement (write / flush interface)
+    def write(self, message: str) -> None:
+        if message.strip():
+            self.log(f"[STDERR] {message.rstrip()}")
+        else:
+            self._file.flush()
+
+    def flush(self) -> None:
+        self._stdout.flush()
+        self._file.flush()
+
+    def close(self) -> None:
+        sys.stderr = self._stderr
+        self._file.close()
+
+
+def make_log_path() -> str:
+    timestamp = datetime.now().strftime("%Y%m%d_%H%M%S")
+    return os.path.join(get_logs_dir(), f"VolumeSensorHeadless_{timestamp}.log")
+
 # ── Device Description ────────────────────────────────────────────────────────
 
-DEVICE_DESCRIPTION_FILE = os.path.join(
-    os.path.dirname(__file__), "..", "DeviceData", "DeviceDescription.json"
-)
-
-
 def load_device_description() -> dict:
-    path = os.path.abspath(DEVICE_DESCRIPTION_FILE)
-    if not os.path.exists(path):
-        print(f"[ERROR] DeviceDescription.json not found at: {path}", file=sys.stderr)
+    if not os.path.exists(DEVICE_DESCRIPTION_FILE):
+        print(f"[ERROR] DeviceDescription.json not found at: {DEVICE_DESCRIPTION_FILE}",
+              file=sys.stderr)
         sys.exit(1)
-    with open(path, "r") as f:
+    with open(DEVICE_DESCRIPTION_FILE, "r") as f:
         return json.load(f)
 
 
@@ -59,21 +109,21 @@ def get_data_paths() -> tuple[str, str]:
     Read CalibrationFile and ResultsFile from DeviceDescription.json.
     Returns absolute paths for (calibration_file, results_file).
     """
-    desc = load_device_description()
-    base = os.path.abspath(os.path.join(os.path.dirname(__file__), "..", "DeviceData"))
-    cal_path     = os.path.join(base, "Calibrations",       desc["CalibrationFile"])
-    results_path = os.path.join(base, "MeasurementResults", desc["ResultsFile"])
+    desc         = load_device_description()
+    cal_path     = os.path.join(BASE_DIR, "Calibrations",       desc["CalibrationFile"])
+    results_path = os.path.join(BASE_DIR, "MeasurementResults", desc["ResultsFile"])
     return cal_path, results_path
 
 # ── Sampling ──────────────────────────────────────────────────────────────────
 
-def collect_samples(meter: PowerMeter, n=SAMPLES_PER_READ, delay=SAMPLE_DELAY) -> np.ndarray:
+def collect_samples(meter: PowerMeter, logger: TeeLogger,
+                    n=SAMPLES_PER_READ, delay=SAMPLE_DELAY) -> np.ndarray:
     samples = []
     for _ in range(n):
         try:
             samples.append(meter.getPowerReading())
         except Exception as e:
-            print(f"[WARN] Read error: {e}", file=sys.stderr)
+            logger.log(f"[WARN]  Read error: {e}")
         time.sleep(delay)
     return np.array(samples)
 
@@ -97,19 +147,20 @@ def robust_mean(data: np.ndarray, sigma=OUTLIER_SIGMA) -> tuple[float, float, in
     return float(np.mean(clean)), float(np.std(clean)), int(mask.sum())
 
 
-def stable_reading(meter: PowerMeter) -> tuple[float, float]:
-    data = collect_samples(meter)
+def stable_reading(meter: PowerMeter, logger: TeeLogger) -> tuple[float, float]:
+    data = collect_samples(meter, logger)
     mean, std, n_clean = robust_mean(data)
     rejected = len(data) - n_clean
-    print(f"[READ] {mean:.4e} W  ±{std:.2e}  ({rejected} spikes / {len(data)} samples)")
+    logger.log(f"[READ]  {mean:.4e} W  ±{std:.2e}  ({rejected} spikes / {len(data)} samples)")
     return mean, std
 
 # ── Calibration ───────────────────────────────────────────────────────────────
 
-def load_calibration(cal_path: str) -> dict:
+def load_calibration(cal_path: str, logger: TeeLogger) -> dict:
     if not os.path.exists(cal_path):
-        print(f"[ERROR] Calibration file not found: {cal_path}", file=sys.stderr)
-        print("[ERROR] Run VolumeSensor.py first to generate a calibration.", file=sys.stderr)
+        logger.log(f"[ERROR] Calibration file not found: {cal_path}")
+        logger.log("[ERROR] Run VolumeSensor.py first to generate a calibration.")
+        logger.close()
         sys.exit(1)
     with open(cal_path, "r") as f:
         raw = json.load(f)
@@ -143,7 +194,8 @@ class VolumeReader:
 
 # ── Results Recording ─────────────────────────────────────────────────────────
 
-def record_measurement(results_path: str, power: float, volume_raw: float, volume_est: float) -> None:
+def record_measurement(results_path: str, power: float,
+                        volume_raw: float, volume_est: float) -> None:
     entry = {
         "timestamp":  time.time(),
         "reading":    power,
@@ -173,40 +225,45 @@ def record_measurement(results_path: str, power: float, volume_raw: float, volum
 # ── Main ──────────────────────────────────────────────────────────────────────
 
 def main():
+    log_path = make_log_path()
+    logger   = TeeLogger(log_path)
+
+    logger.log(f"[INFO]  Log file      : {log_path}")
+
     cal_path, results_path = get_data_paths()
+    logger.log(f"[INFO]  Calibration   : {cal_path}")
+    logger.log(f"[INFO]  Results       : {results_path}")
 
-    print(f"[INFO] Calibration : {cal_path}")
-    print(f"[INFO] Results     : {results_path}")
-
-    cal_table = load_calibration(cal_path)
-    print(f"[INFO] Calibration loaded ({len(cal_table)} levels)")
+    cal_table = load_calibration(cal_path, logger)
+    logger.log(f"[INFO]  Calibration loaded ({len(cal_table)} levels)")
 
     meter = PowerMeter(deviceId=USB_DEVICE_STRING, cmdLogEnb=False)
 
     while meter.isConnected() == False:
         meter.connect()
-        
+    
     meter.setMeasurementUnit(MODE_WATT)
     meter.setWavelength(WAVELENGTH_NM)
     meter.setMeasurementRange(MEASUREMENT_RANGE)
-    print("[INFO] Meter connected. Starting measurement loop.")
+    logger.log("[INFO]  Meter connected. Starting measurement loop.")
 
     smoother = VolumeReader(window=5)
 
     try:
         while True:
-            power, _ = stable_reading(meter)
+            power, _ = stable_reading(meter, logger)
             volume_raw = estimate_volume(power, cal_table)
             smoother.update(volume_raw)
             volume_est = smoother.get()
 
             record_measurement(results_path, power, volume_raw, volume_est)
-            print(f"[VOL]  {volume_est:6.1f}%  (raw: {volume_raw:.1f}%  power: {power:.4e} W)")
+            logger.log(f"[VOL]   {volume_est:6.1f}%  (raw: {volume_raw:.1f}%  power: {power:.4e} W)")
 
     except KeyboardInterrupt:
-        print("\n[INFO] Shutting down.")
+        logger.log("[INFO]  Shutting down.")
     finally:
         meter.disconnect()
+        logger.close()
 
 
 if __name__ == "__main__":

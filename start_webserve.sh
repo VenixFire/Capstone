@@ -9,4 +9,5 @@ mkdir -p "$LOG_DIR"
 
 LOG_FILE="$LOG_DIR/WebContentServe_$(date +%Y%m%d_%H%M%S).txt"
 
-python3 "$SCRIPT_DIR/src/WebContentServe.py" >> "$LOG_FILE" 2>&1
+# updated to use logging from python app instead
+python3 "$SCRIPT_DIR/src/WebContentServe.py" #>> "$LOG_FILE" 2>&1
