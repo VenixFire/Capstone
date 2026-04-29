@@ -6,29 +6,29 @@ ROOT=root
 
 if [[ "$USER" == "$ROOT" ]]; then
 
-    echo // Installing Necessary Python Packages
+    echo "--// Installing Necessary Python Packages"
     #
     sudo apt install python3-pyvisa python3-zeroconf python3-psutil
 
 
 
-    echo // Installing Necessary Packages
+    echo "--// Installing Necessary Packages"
     #
-    sudo apt install avahi-daemon nmcli
+    sudo apt install avahi-daemon network-manager
 
 
 
     # /etc/udev/rules.d
     RULE_FILE="/etc/udev/rules.d/ThorLabs.rules"
-    echo // Adding rules for PyVisa Access
+    echo "--// Adding rules for PyVisa Access"
     if [ -f $RULE_FILE ]; then
         touch /etc/udev/rules.d/ThorLabs.rules
         echo \#USBTMC Instruments\n\# ThorLabs PM61\nSUBSYSTEMS=="usb", ACTION=="add", ATTRS{idVendor}=="1313", ATTRS{idProduct}=="80b4", GROUP="usbtmc", MODE="0660" > /etc/udev/rules.d/ThorLabs.rules
+        echo "--// Successfully wrote rules"
     else
-        echo // Rule file already exists!
+        echo "--// Rule file already exists, no overwriting"
     fi
 
-
 else
-    echo // You need to run 'sudo install.sh'
+    echo "--// You need to run as sudo -- 'sudo install.sh'"
 fi
