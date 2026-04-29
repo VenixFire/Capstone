@@ -225,8 +225,8 @@ def record_measurement(power: float, volume_raw: float, volume_est: float) -> No
 
 
 def main():
-    meter = PowerMeter(cmdLogEnb=False)
-    meter.connect(USB_DEVICE_STRING)
+    meter = PowerMeter(deviceId=USB_DEVICE_STRING, cmdLogEnb=False)
+    meter.connect()
 
     meter.setMeasurementUnit(MODE_WATT)
     meter.setWavelength(WAVELENGTH_NM)

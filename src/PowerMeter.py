@@ -53,8 +53,9 @@ class PowerMeter:
     """
 
     # Constructor
-    def __init__(self, isSimulated=False, cmdLogEnb=False):
-        self._deviceId = "USB0::EMPTY"
+    def __init__(self, deviceId=None, isSimulated=False, cmdLogEnb=False):
+
+        self._deviceId = deviceId
         self._device = None
         self._unit = None
         self._range = None
@@ -92,27 +93,27 @@ class PowerMeter:
     """
         Public Methods
     """
-    def connect(self, specificId=None) -> None:
+    def connect(self) -> None:
         print("# ATTEMPT TO CONNECT")
         
-        # generate the resourcelist
-        resourceList = self._rm.list_resources()
-        print("# RESOURCES", resourceList, "\n")
+
+        # select a device from the list
+        if self._deviceId == None:
+            # generate the resourcelist
+            resourceList = self._rm.list_resources()
+            print("# RESOURCES", resourceList, "\n")
+            
+            # ensure there is the one device connected
+            if len(resourceList) > 0:
+                deviceId = resourceList[0]
+            else:
+                print("! NO DEVICES CONNECTED")
+                return
+            
+            self._deviceId = deviceId
+
         
-        # ensure there is the one device connected
-        if len(resourceList) > 0:
-            deviceId = resourceList[0]
-        else:
-            print("! NO DEVICES CONNECTED")
-            return
-
-        # Connect to pm61 (should be only available device)
-
-        if specificId:
-            deviceId = specificId
-
-        self._deviceId = deviceId
-        self._device = self._rm.open_resource(deviceId)
+        self._device = self._rm.open_resource(self._deviceId)
         print("# CONNECTION OPENED WITH", deviceId)
 
         # print the device information
@@ -224,8 +225,8 @@ class PowerMeter:
     Example Behavior
 """
 if __name__ == "__main__":
-    device = PowerMeter(cmdLogEnb=True)
-    device.connect(USB_DEVICE_STRING)
+    device = PowerMeter(deviceId=USB_DEVICE_STRING, cmdLogEnb=True)
+    device.connect()
     
     device.setMeasurementUnit("W")
     device.setWavelength(870)
