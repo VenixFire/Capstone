@@ -10,7 +10,7 @@ echo ---- VANDAL OPTICS INSTALLING DEPENDENCIES ----
 USER=$(whoami)
 ROOT=root
 
-AP_CONF=
+AP_ID="AccessPoint"
 AP_NAME="VandalOptics"
 AP_PWD="GoVandals!"
 
@@ -45,12 +45,13 @@ if [[ "$USER" == "$ROOT" ]]; then
 
 
     # Check for existing network configuration
-    if $(nmcli conn | grep AccessPoint); then
+    if $(nmcli conn | grep $AP_ID); then
         echo "--// Access point config file already exists."
     else
         echo "--// Creating new AccessPoint connection"
-        sudo nmcli dev wifi hotspot ifname wlan0 ssid $AP_NAME password $AP_PWD con-name "AccessPoint"
-    
+        sudo nmcli dev wifi hotspot ifname wlan0 ssid $AP_NAME password $AP_PWD con-name $AP_ID
+        sudo nmcli conn up 
+    fi
 
 else
     echo "--// You need to run as sudo -- 'sudo install.sh'"
