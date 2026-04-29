@@ -91,6 +91,10 @@ echo "--// Starting Services"
 sudo systemctl start vandaloptics-logger.service
 sudo systemctl start vandaloptics-webserve.service
 
+echo "----// Installation complete!"
+echo
+echo "Please run src/CalibrationTool.py to create a calibration!" 
+
 
 ## User else
 else
