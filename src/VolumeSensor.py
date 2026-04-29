@@ -21,7 +21,36 @@ import os
 from collections import deque
 from PowerMeter import PowerMeter, MODE_WATT, USB_DEVICE_STRING
 
-RESULTS_FILE = "MeasurementResults.json"
+# ── Device Description ────────────────────────────────────────────────────────
+
+DEVICE_DESCRIPTION_FILE = os.path.join(
+    os.path.dirname(__file__), "..", "DeviceData", "DeviceDescription.json"
+)
+
+def load_device_description() -> dict:
+    """Load the device description JSON, which defines filenames for cal and results."""
+    path = os.path.abspath(DEVICE_DESCRIPTION_FILE)
+    if not os.path.exists(path):
+        raise FileNotFoundError(f"DeviceDescription.json not found at: {path}")
+    with open(path, 'r') as f:
+        return json.load(f)
+
+def get_data_paths() -> tuple[str, str]:
+    """
+    Read CalibrationFile and ResultsFile from DeviceDescription.json.
+    Returns absolute paths for (calibration_file, results_file).
+    """
+    desc = load_device_description()
+
+    base = os.path.abspath(os.path.join(os.path.dirname(__file__), "..", "DeviceData"))
+
+    cal_filename     = desc["CalibrationFile"]
+    results_filename = desc["ResultsFile"]
+
+    cal_path     = os.path.join(base, "Calibrations",       cal_filename)
+    results_path = os.path.join(base, "MeasurementResults", results_filename)
+
+    return cal_path, results_path
 
 # ── Configuration ────────────────────────────────────────────────────────────
 
@@ -34,7 +63,6 @@ SAMPLE_DELAY        = 0.05          # seconds between samples (20 Hz)
 OUTLIER_SIGMA       = 2.5           # MAD sigma threshold for spike rejection
 
 CAL_LEVELS          = [0, 20, 40, 60, 80, 100]   # % volume levels
-CAL_FILE            = "calibration.json"      # saved calibration data
 
 # ── Noise-Robust Reading ──────────────────────────────────────────────────────
 
@@ -94,10 +122,10 @@ def warmup(seconds=WARMUP_SECONDS):
         print("\n  Warmup skipped.")
 
 
-def run_calibration(meter: PowerMeter) -> dict:
+def run_calibration(meter: PowerMeter, cal_path: str) -> dict:
     """
     Interactive calibration: prompts user to set each fill level,
-    collects stable readings, saves to CAL_FILE.
+    collects stable readings, saves to cal_path.
     Returns calibration table {volume_pct: power_watts}.
     """
     print("\n── Calibration ─────────────────────────────────────────────")
@@ -133,23 +161,24 @@ def run_calibration(meter: PowerMeter) -> dict:
     else:
         print("  Dynamic range looks usable.")
 
-    # Save to file
-    with open(CAL_FILE, 'w') as f:
+    # Ensure directory exists and save
+    os.makedirs(os.path.dirname(cal_path), exist_ok=True)
+    with open(cal_path, 'w') as f:
         json.dump(cal_table, f, indent=2)
-    print(f"\nCalibration saved to {CAL_FILE}")
+    print(f"\nCalibration saved to {cal_path}")
 
     return cal_table
 
 
-def load_calibration() -> dict | None:
+def load_calibration(cal_path: str) -> dict | None:
     """Load calibration from file if it exists."""
-    if not os.path.exists(CAL_FILE):
+    if not os.path.exists(cal_path):
         return None
-    with open(CAL_FILE, 'r') as f:
+    with open(cal_path, 'r') as f:
         raw = json.load(f)
     # JSON keys are strings — convert back to int
     cal = {int(k): v for k, v in raw.items()}
-    print(f"Loaded calibration from {CAL_FILE}")
+    print(f"Loaded calibration from {cal_path}")
     return cal
 
 
@@ -187,9 +216,9 @@ class VolumeReader:
         return float(np.mean(self.buf)) if self.buf else float('nan')
 
 
-def record_measurement(power: float, volume_raw: float, volume_est: float) -> None:
+def record_measurement(results_path: str, power: float, volume_raw: float, volume_est: float) -> None:
     """
-    Append a single measurement entry to MeasurementResults.json in realtime.
+    Append a single measurement entry to the results file in realtime.
     The file is kept as a valid JSON array at all times.
     """
     entry = {
@@ -199,14 +228,16 @@ def record_measurement(power: float, volume_raw: float, volume_est: float) -> No
         "volume_est": volume_est,
     }
 
+    os.makedirs(os.path.dirname(results_path), exist_ok=True)
+
     # If file doesn't exist yet, start a fresh array
-    if not os.path.exists(RESULTS_FILE):
-        with open(RESULTS_FILE, 'w') as f:
+    if not os.path.exists(results_path):
+        with open(results_path, 'w') as f:
             json.dump([entry], f, indent=2)
         return
 
     # Otherwise: strip the closing ] and append
-    with open(RESULTS_FILE, 'r+') as f:
+    with open(results_path, 'r+') as f:
         f.seek(0, os.SEEK_END)
         pos = f.tell()
 
@@ -225,6 +256,9 @@ def record_measurement(power: float, volume_raw: float, volume_est: float) -> No
 
 
 def main():
+    # Resolve file paths from device description before doing anything else
+    cal_path, results_path = get_data_paths()
+
     meter = PowerMeter(deviceId=USB_DEVICE_STRING, cmdLogEnb=False)
     meter.connect()
 
@@ -236,18 +270,18 @@ def main():
     warmup()
 
     # Calibration: load existing or run new
-    cal_table = load_calibration()
+    cal_table = load_calibration(cal_path)
     if cal_table is None:
         print("No calibration file found.")
-        cal_table = run_calibration(meter)
+        cal_table = run_calibration(meter, cal_path)
     else:
         redo = input("Run new calibration? (y/N): ").strip().lower()
         if redo == 'y':
-            cal_table = run_calibration(meter)
+            cal_table = run_calibration(meter, cal_path)
 
     # Live reading loop
     print("\n── Live Volume Readings ─────────────────────────────────────")
-    print(f"Recording to {RESULTS_FILE}. Press Ctrl+C to stop.\n")
+    print(f"Recording to {results_path}. Press Ctrl+C to stop.\n")
 
     smoother = VolumeReader(window=5)
 
@@ -258,7 +292,7 @@ def main():
             smoother.update(volume)
             smoothed = smoother.get()
 
-            record_measurement(power, volume, smoothed)
+            record_measurement(results_path, power, volume, smoothed)
             print(f"  Volume: {smoothed:6.1f}%  (raw: {volume:.1f}%  power: {power:.4e} W)")
 
     except KeyboardInterrupt:

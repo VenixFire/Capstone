@@ -1,5 +1,6 @@
 # remove pycache
 **__pycache__/
 **/logs/
+**/DeviceData/
 calibration.json
 MeasurementResults.json
