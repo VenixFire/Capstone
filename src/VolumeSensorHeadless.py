@@ -251,6 +251,19 @@ def main():
 
     try:
         while True:
+
+            # update target files
+            cal_path_new, results_path_new = get_data_paths()
+            if cal_path_new != cal_path:
+                cal_path = cal_path_new
+                logger.log(f"[INFO]  Calibration Updated  : {cal_path}")
+                cal_table = load_calibration(cal_path, logger)
+                logger.log(f"[INFO]  Calibration loaded ({len(cal_table)} levels)")
+
+            if results_path_new != results_path:
+                results_path = results_path_new
+                logger.log(f"[INFO]  Results Updated  : {results_path}")
+
             power, _ = stable_reading(meter, logger)
             volume_raw = estimate_volume(power, cal_table)
             smoother.update(volume_raw)
