@@ -7,44 +7,23 @@ Datalogger and backend developed by Jack Chambers.
 Intended platform is Raspberry Pi (4b) using headless debian with latest version. 
 Datalogger interfaces with Thorlabs PM60 Optic Power Meter to read optical power levels.
 
+## Setup
+Note: this is designed for a specific PM61 power meter, I didn't include any way to customize the specific serial number of your device. Please see `VolumeSensorHeadless.py` and `install.sh` to update the specific VendorId, DeviceId, and SerialNumber for your device.
 
-## Libraries & Packages
-### Python Libraries
-- PyVisa (SCPI)
-- Numpy
-- Flask
+### Debian Install
+Create a new image of debian, this was executed on debian trixie, create a user named `logger` and set the password to whatever you want.
 
-### Packages
-- avahi-daemon (dns masking for http)
-- nmcli (enabling wifi access point; native on newer debian versions)
 
-### Necessary Setup
-It's necessary when deploying on Linux to provide proper read/write access to the power meter peripheral.
+### Clone The Repository
+Clone the repository to the home directory of the `logger` user:
+```git clone https://github.com/VenixFire/Capstone```
 
-## Todo List
-- [x] Power Meter SCPI Interface
-- [x] Calibrations
-- [x] Result Logging
-- [ ] Error Logging
-- [ ] Device Information
-- [x] HTTP Content Service
-- [ ] Reformat all that for clarity / readability
 
-## Important References
-USB Power Control
-[https://github.com/mvp/uhubctl](https://github.com/mvp/uhubctl) 
+### Run Install Script
+Just run `./install.sh` and it should install all the relevant packages, services, and scripts to start the logger and webserver.
 
-## Credentials
-Raspberry Pi
-> logger@vandaloptics
-> vandals
+Make sure to run `python3 ./src/CalibrationTool.py` to create an initial calibration.
 
-Wi-Fi
-> VandalOptics
-> GoVandals!
 
-## Notes
-- Volume should be a polynomial, I forget what shape, but it's not a linear fit.
-- Need to experiment, but it might spawn two apps
-- Pipe the output to a logfile, so the app should add a timestamp
-
+### View Results
+You can navigate to `hostname:5000` after connecting to the WiFi and view live results and readings, create new measurement files, and view logs from device activity.
