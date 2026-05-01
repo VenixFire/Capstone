@@ -230,6 +230,7 @@ class PowerMeter:
 """
     Example Behavior
 """
+import numpy
 if __name__ == "__main__":
     device = PowerMeter(deviceId=USB_DEVICE_STRING, cmdLogEnb=True)
     device.connect()
@@ -238,12 +239,16 @@ if __name__ == "__main__":
     device.setWavelength(870)
     device.setMeasurementRange(200e-6)
 
+    valList = []
+
     try:
         while True:
             val = device.getPowerReading()
-            #val = device.rawQuery("MEAS:POW?")
-            print("# MEASUREMENT:", val)
+            valList.append(val)
+            print("Reading:", val)
+            print("Entries:", len(valList))
             time.sleep(1.5)
 
     except KeyboardInterrupt:
+        stdDev = numpy.std(valList)
         device.disconnect()
