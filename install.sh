@@ -45,6 +45,7 @@ echo "----// Adding rules for PyVisa Access"
 if [ -f "$RULE_FILE" ]; then
 echo "--// Rule file already exists, no overwriting"
 else
+sudo groupadd usbtmc
 sudo touch /etc/udev/rules.d/ThorLabs.rules
 sudo echo -e "
 # USBTMC Instruments List
@@ -52,6 +53,7 @@ sudo echo -e "
 # ThorLabs PM61
 SUBSYSTEMS=="usb", ACTION=="add", ATTRS{idVendor}=="$VENDOR_ID", ATTRS{idProduct}=="$PRODUCT_ID", GROUP="usbtmc", MODE="0660"
 " > /etc/udev/rules.d/ThorLabs.rules
+sudo usermod -aG usbtmc logger
 echo "--// Successfully wrote rules"
 fi
 
